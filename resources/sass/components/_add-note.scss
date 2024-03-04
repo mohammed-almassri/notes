@@ -1,0 +1,19 @@
+.add-note {
+    display: flex;
+    flex-direction: column;
+    .add-note-input-title,
+    .add-note-input-description {
+        border: none;
+        background-color: transparent;
+        font-size: var(--font-xl);
+        &:active,
+        &:focus {
+            border: none;
+            outline: none;
+        }
+    }
+
+    .add-note-input-description {
+        font-size: var(--font-sm);
+    }
+}

@@ -21,7 +21,11 @@ class NotesController extends Controller
      */
     public function store(Request $request)
     {
-        $note = Note::create($request->all());
+        $data = array_merge(
+            $request->all(),
+            ['user_id' => \Auth::id()]
+        );
+        $note = Note::create($data);
         return $note;
     }
 

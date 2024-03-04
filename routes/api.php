@@ -17,7 +17,17 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::group(['middleware' => ['auth:sanctum', 'user-scope'], 'namespace' => 'App\\Http\\Controllers\\API'], function () {
-    Route::resource('notes', 'NotesController');
-    Route::resource('tasks', 'TasksController');
+Route::group(['middleware' => [], 'namespace' => 'App\\Http\\Controllers\\API'], function () {
+
+    Route::group(['prefix' => 'auth'], function () {
+        Route::post('login', 'AuthController@login');
+        Route::post('register', 'AuthController@register');
+        Route::post('logout', 'AuthController@logout');
+        Route::post('user', 'AuthController@user');
+    });
+
+    Route::group(['middleware' => ['auth:sanctum', 'user-scope']], function () {
+        Route::resource('notes', 'NotesController');
+        Route::resource('tasks', 'TasksController');
+    });
 });

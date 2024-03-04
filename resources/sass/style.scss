@@ -1,5 +1,11 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+@import "./abstracts/variables.scss";
+@import "./abstracts/mixins.scss";
+@import "./base/base.scss";
+@import "./base/typography.scss";
+@import "./utils/utils.scss";
+
+@import "./components/bottom-menu.scss";
+@import "./components/page.scss";
+@import "./components/add-note.scss";
+@import "./components/form.scss";
+@import "./components/note-grid.scss";

@@ -1,0 +1,23 @@
+.note-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 1rem;
+    margin-top: 1rem;
+    .note-grid-item {
+        background-color: var(--color-white);
+        padding: 1rem;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(var(--color-black), 0.1);
+        transition: box-shadow 0.3s ease;
+        &:hover {
+            box-shadow: 0 0 20px rgba(var(--color-black), 0.2);
+        }
+        .note__title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .note__body {
+            font-size: 1.2rem;
+        }
+    }
+}

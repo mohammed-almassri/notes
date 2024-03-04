@@ -1,11 +1,18 @@
 <template>
-    <div>
+    <div class="App">
         <router-view></router-view>
     </div>
 </template>
 
 <script>
-    export default {
-        name: 'App',
-    }
+import BottomMenu from "./components/layout/BottomMenu.vue";
+export default {
+    name: "App",
+    components: {
+        BottomMenu,
+    },
+    mounted() {
+        this.$store.dispatch("auth/initAuth");
+    },
+};
 </script>
