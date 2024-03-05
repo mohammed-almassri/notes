@@ -15,7 +15,7 @@
             <span class="bottom-menu-item-title">Finished</span></router-link
         >
         <router-link class="bottom-menu-item bottom-menu-item-add" to="/add">
-            +
+            <img src="@/src/assets/img/icons/plus.svg" />
         </router-link>
         <!-- this span only exists to take up space since the add item has absolute positioning-->
         <span></span>

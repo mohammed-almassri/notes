@@ -14,7 +14,7 @@
     @vite(['resources/js/app.js', 'resources/sass/style.scss'])
 </head>
 
-<body>
+<body class="dark">
     <div id="app"></div>
 </body>
 

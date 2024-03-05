@@ -1,0 +1,23 @@
+// update variables for dark theme
+
+body.dark {
+    /* Dark theme colors */
+    --color-primary: #836fff; /* Adjusted primary color for dark theme */
+    --color-primary-dark: #524bbb; /* Adjusted darker shade of primary color */
+    --color-primary-light: #b6aaff; /* Adjusted lighter shade of primary color */
+    --color-primary-bg: #202124; /* Background for primary elements */
+
+    --color-black: #ffffff; /* Adjusted black for better contrast */
+    --color-white: #000000; /* Adjusted white for better contrast */
+
+    --color-grey: #979797; /* Adjusted grey for better contrast */
+    --color-grey-light: #666666; /* Adjusted lighter grey for better contrast */
+    --color-grey-dark: #c4c4c4; /* Adjusted darker grey for better contrast */
+
+    .note-grid {
+        .note-grid-item {
+            background-color: var(--color-primary-bg);
+            border: 1px solid var(--color-grey-light);
+        }
+    }
+}
