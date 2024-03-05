@@ -16,6 +16,7 @@
                 v-model="noteDescription"
             ></textarea>
         </div>
+        <div class="add-note-options"></div>
     </div>
 </template>
 
@@ -24,20 +25,31 @@ import store from "@/src/store/index.js";
 import Note from "@/src/models/Note.js";
 export default {
     name: "Add",
+    mounted() {
+        if (this.$route.params.id) {
+            const note = this.$store.state.notes.notes.find(
+                (note) => note.id === this.$route.params.id
+            );
+            console.log(note);
+            if (note) {
+                this.noteTitle = note.title;
+                this.noteDescription = note.description;
+            }
+        }
+    },
     data() {
         return {
             noteTitle: "",
             noteDescription: "",
-            note: new Note(),
         };
     },
     methods: {
         addNote() {
-            this.note = {
+            const data = {
                 title: this.noteTitle,
                 description: this.noteDescription,
             };
-            store.dispatch("notes/addNote", this.note);
+            store.dispatch("notes/addNote", data);
         },
     },
 };

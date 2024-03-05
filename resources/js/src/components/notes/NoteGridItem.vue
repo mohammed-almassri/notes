@@ -1,17 +1,18 @@
 <template>
-    <div class="note-grid-item">
+    <router-link
+        class="note-grid-item"
+        :to="{ name: 'view', params: { id: note.id } }"
+    >
         {{ note.title }}
-    </div>
+    </router-link>
 </template>
 
 <script>
-import Note from "@/src/models/Note.js";
 export default {
     name: "NoteGridItem",
     props: {
         note: {
             required: true,
-            type: Note,
         },
     },
 };

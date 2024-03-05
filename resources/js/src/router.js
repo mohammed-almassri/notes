@@ -20,6 +20,15 @@ const routes = [
       auth: true
     }
   },
+  {
+    path: '/view/:id',
+    name: 'view',
+    component: () => import('./pages/Add.vue'),
+    meta: {
+      title: 'View Note',
+      auth: true
+    }
+  },
   //auth routes
   {
     path: '/login',
