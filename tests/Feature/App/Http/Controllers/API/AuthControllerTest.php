@@ -20,6 +20,17 @@ class AuthControllerTest extends TestCase
             'password' => 'password',
         ]);
 
+        //assert the structure has a user and a token and the user has a name, email and id
+
+        $response->assertJsonStructure([
+            'user' => [
+                'id',
+                'name',
+                'email',
+            ],
+            'access_token',
+        ]);
+
         $response->assertStatus(200);
     }
 
@@ -33,6 +44,14 @@ class AuthControllerTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('users', ['email' => 'user@gmail.com']);
+        $response->assertJsonStructure([
+            'user' => [
+                'id',
+                'name',
+                'email',
+            ],
+            'access_token',
+        ]);
 
         $response->assertStatus(200);
     }

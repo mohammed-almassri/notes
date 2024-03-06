@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Data\NoteData;
 use App\Http\Controllers\Controller;
 use App\Repositories\Notes\NotesRepositoryInterface;
 use Illuminate\Http\Request;
@@ -29,12 +30,12 @@ class NotesController extends Controller
      */
     public function store(Request $request)
     {
-        $data = array_merge(
+        $noteData = NoteData::validateAndCreate(array_merge(
             $request->all(),
             ['user_id' => \Auth::id()]
-        );
-        $note = $this->notesRepository->create($data);
-        return $note;
+        ));
+        $this->notesRepository->create($noteData->toArray());
+        return $noteData;
     }
 
     /**
@@ -51,7 +52,8 @@ class NotesController extends Controller
     public function update(Request $request, $id)
     {
         $note = $this->notesRepository->update($id, $request->all());
-        return $note;
+        $noteData = NoteData::from($note);
+        return $noteData;
     }
 
     /**
@@ -59,6 +61,7 @@ class NotesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->notesRepository->delete($id);
+        return response()->json(['message' => 'Note deleted successfully'], 204);
     }
 }

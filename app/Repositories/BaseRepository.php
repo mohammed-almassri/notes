@@ -39,6 +39,6 @@ class BaseRepository
 
     public function delete(int $id)
     {
-        return $this->model::destroy($id);
+        return $this->find($id)->delete();
     }
 }

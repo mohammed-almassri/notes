@@ -22,8 +22,7 @@ Route::group(['middleware' => [], 'namespace' => 'App\\Http\\Controllers\\API', 
     Route::group(['prefix' => 'auth'], function () {
         Route::post('login', 'AuthController@login');
         Route::post('register', 'AuthController@register');
-        Route::post('logout', 'AuthController@logout');
-        Route::post('user', 'AuthController@user');
+        Route::get('user', 'AuthController@user')->middleware('auth:sanctum');
     });
 
     Route::group(['middleware' => ['auth:sanctum', 'user-scope']], function () {

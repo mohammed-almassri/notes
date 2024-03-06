@@ -49,4 +49,68 @@ class NotesControllerTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function test_can_delete_note()
+    {
+        $user = \App\Models\User::factory()->create();
+        $note = $user->notes()->create([
+            'title' => 'Test Note',
+            'description' => 'This is a test note',
+        ]);
+        $this->actingAs($user);
+        $response = $this->deleteJson(route('api.notes.destroy', ['note' => $note->id]));
+
+        //assert that the note was deleted softly
+        $this->assertSoftDeleted($note);
+
+        $response->assertStatus(204);
+    }
+
+    public function test_can_get_note()
+    {
+        $user = \App\Models\User::factory()->create();
+        $note = $user->notes()->create([
+            'title' => 'Test Note',
+            'description' => 'This is a test note',
+        ]);
+        $this->actingAs($user);
+        $response = $this->getJson(route('api.notes.show', ['note' => $note->id]));
+
+        $response->assertJsonStructure([
+            'id',
+            'title',
+            'description',
+            'image_url',
+        ]);
+
+        $response->assertStatus(200);
+    }
+
+    public function test_can_get_all_notes()
+    {
+        $user = \App\Models\User::factory()->create();
+        $notes = $user->notes()->createMany([
+            [
+                'title' => 'Test Note 1',
+                'description' => 'This is a test note 1',
+            ],
+            [
+                'title' => 'Test Note 2',
+                'description' => 'This is a test note 2',
+            ],
+        ]);
+        $this->actingAs($user);
+        $response = $this->getJson(route('api.notes.index'));
+
+        $response->assertJsonStructure([
+            '*' => [
+                'id',
+                'title',
+                'description',
+                'image_url',
+            ],
+        ]);
+
+        $response->assertStatus(200);
+    }
 }
