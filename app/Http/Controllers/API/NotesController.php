@@ -3,17 +3,25 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Note;
+use App\Repositories\Notes\NotesRepositoryInterface;
 use Illuminate\Http\Request;
 
 class NotesController extends Controller
 {
+
+    private $notesRepository;
+
+    public function __construct(NotesRepositoryInterface $notesRepository)
+    {
+        $this->notesRepository = $notesRepository;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Note::all();
+        return $this->notesRepository->all();
     }
 
     /**
@@ -25,24 +33,24 @@ class NotesController extends Controller
             $request->all(),
             ['user_id' => \Auth::id()]
         );
-        $note = Note::create($data);
+        $note = $this->notesRepository->create($data);
         return $note;
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Note $note)
+    public function show($id)
     {
-        return $note;
+        return $this->notesRepository->find($id);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Note $note)
+    public function update(Request $request, $id)
     {
-        $note->update($request->all());
+        $note = $this->notesRepository->update($id, $request->all());
         return $note;
     }
 

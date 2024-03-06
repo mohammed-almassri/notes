@@ -4,10 +4,19 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\Auth\AuthServiceInterface;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
+
+    private $authService;
+
+    public function __construct(AuthServiceInterface $authService)
+    {
+        $this->authService = $authService;
+    }
+
     public function login(Request $request)
     {
         // Validate the request
@@ -17,35 +26,18 @@ class AuthController extends Controller
         ]);
 
         // Attempt to log the user in
-        if (!auth()->attempt($request->only('email', 'password'))) {
-            return response([
-                'message' => 'Invalid credentials',
-            ], 401);
-        }
-
-        // Generate a token for the user
-        $token = auth()->user()->createToken('authToken')->plainTextToken;
+        $response = $this->authService->login($request->only('email', 'password'));
 
         return response([
-            'user' => auth()->user(),
-            'token' => $token,
-        ]);
-    }
-
-    public function logout(Request $request)
-    {
-        // Revoke the token
-        $request->user()->token()->revoke();
-
-        return response([
-            'message' => 'You have been successfully logged out',
+            'user' => $response->user,
+            'access_token' => $response->token,
         ]);
     }
 
     public function user(Request $request)
     {
         return response([
-            'user' => $request->user(),
+            'user' => $this->authService->user(),
         ]);
     }
 
@@ -58,19 +50,12 @@ class AuthController extends Controller
             'password' => 'required|confirmed',
         ]);
 
-        // Create the user
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
-
-        // Generate a token for the user
-        $token = $user->createToken('authToken')->accessToken;
+        // Register the user
+        $response = $this->authService->register($request->all());
 
         return response([
-            'user' => $user,
-            'access_token' => $token,
+            'user' => $response->user,
+            'access_token' => $response->token,
         ]);
     }
 }

@@ -10,7 +10,7 @@ class AuthControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testLogin()
+    public function test_user_can_login()
     {
         //create user
         $user = User::factory()->create();
@@ -23,7 +23,7 @@ class AuthControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testRegister()
+    public function test_user_can_register()
     {
         $response = $this->postJson('/api/auth/register', [
             'name' => 'user',
