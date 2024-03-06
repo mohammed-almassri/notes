@@ -6,9 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Note extends Model
+class File extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['title', 'description', 'user_id', 'image_url'];
+    protected $fillable = [
+        'filename',
+        'original_name',
+        'mime_type',
+        'size',
+    ];
 }

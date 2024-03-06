@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::group(['middleware' => [], 'namespace' => 'App\\Http\\Controllers\\API'], function () {
+Route::group(['middleware' => [], 'namespace' => 'App\\Http\\Controllers\\API', 'as' => 'api.'], function () {
 
     Route::group(['prefix' => 'auth'], function () {
         Route::post('login', 'AuthController@login');
@@ -27,6 +27,11 @@ Route::group(['middleware' => [], 'namespace' => 'App\\Http\\Controllers\\API'],
     });
 
     Route::group(['middleware' => ['auth:sanctum', 'user-scope']], function () {
+
+        Route::group(['prefix' => 'files', 'as' => 'files.'], function () {
+            Route::post('upload', 'FilesController@upload')->name('upload');
+        });
+
         Route::resource('notes', 'NotesController');
         Route::resource('tasks', 'TasksController');
     });
