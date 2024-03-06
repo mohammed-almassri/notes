@@ -30,7 +30,7 @@ class AuthController extends Controller
 
         return response([
             'user' => $response->user,
-            'access_token' => $response->token,
+            'token' => $response->token,
         ]);
     }
 
@@ -55,7 +55,7 @@ class AuthController extends Controller
 
         return response([
             'user' => $response->user,
-            'access_token' => $response->token,
+            'token' => $response->token,
         ]);
     }
 }

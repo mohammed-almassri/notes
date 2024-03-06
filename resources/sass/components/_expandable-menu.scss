@@ -1,0 +1,35 @@
+.expandable-menu {
+    position: relative;
+    .expandable-menu-expand-button {
+    }
+    &.expanded {
+        .expandable-menu-menu {
+            display: flex;
+        }
+    }
+    .expandable-menu-menu {
+        position: absolute;
+        top: -100%;
+        left: 0;
+        display: none;
+        flex-direction: column;
+        background-color: var(--color-primary-bg);
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+        padding: 0;
+        margin: 0;
+        border: none;
+        z-index: 100;
+
+        .expandable-menu-option {
+            display: flex;
+            padding: 0.5em 1em;
+            margin: 0;
+            border: none;
+            background-color: var(--color-primary-bg);
+            cursor: pointer;
+            &:hover {
+                background-color: var(--color-primary-bg-light);
+            }
+        }
+    }
+}

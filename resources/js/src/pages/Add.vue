@@ -6,24 +6,32 @@
                 type="text"
                 class="add-note-input-title"
                 placeholder="Add your title here"
-                @blur="addNote"
+                @blur="addOrUpdateNote"
                 v-model="noteTitle"
             />
             <textarea
                 class="add-note-input-description"
                 placeholder="additional info"
-                @blur="addNote"
+                @blur="addOrUpdateNote"
                 v-model="noteDescription"
             ></textarea>
+            <img
+                v-if="noteImageURL"
+                :src="noteImageURL"
+                alt="note image"
+                class="add-note-image"
+            />
         </div>
-        <div class="add-note-options"></div>
+        <note-menu @addImage="onAddImage"></note-menu>
     </div>
 </template>
 
 <script>
 import store from "@/src/store/index.js";
 import Note from "@/src/models/Note.js";
+import NoteMenu from "../components/notes/NoteMenu.vue";
 export default {
+    components: { NoteMenu },
     name: "Add",
     mounted() {
         if (this.$route.params.id) {
@@ -41,15 +49,40 @@ export default {
         return {
             noteTitle: "",
             noteDescription: "",
+            noteImageURL: "",
+            noteId: null,
+            requestSent: false,
         };
     },
     methods: {
-        addNote() {
+        addOrUpdateNote() {
+            if (this.requestSent) return;
+            console.log("id", this.noteId);
             const data = {
                 title: this.noteTitle,
                 description: this.noteDescription,
+                image_url: this.noteImageURL,
             };
-            store.dispatch("notes/addNote", data);
+            this.requestSent = true;
+            if (this.noteId != null) {
+                data.id = this.noteId;
+                store.dispatch("notes/updateNote", data).finally(() => {
+                    this.requestSent = false;
+                });
+            } else {
+                store
+                    .dispatch("notes/addNote", data)
+                    .then((res) => {
+                        this.noteId = res.id;
+                    })
+                    .finally(() => {
+                        this.requestSent = false;
+                    });
+            }
+        },
+        onAddImage(url) {
+            this.noteImageURL = url;
+            this.addOrUpdateNote();
         },
     },
 };

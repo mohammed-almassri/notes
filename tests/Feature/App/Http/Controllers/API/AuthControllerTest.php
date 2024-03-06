@@ -28,7 +28,7 @@ class AuthControllerTest extends TestCase
                 'name',
                 'email',
             ],
-            'access_token',
+            'token',
         ]);
 
         $response->assertStatus(200);
@@ -50,7 +50,7 @@ class AuthControllerTest extends TestCase
                 'name',
                 'email',
             ],
-            'access_token',
+            'token',
         ]);
 
         $response->assertStatus(200);

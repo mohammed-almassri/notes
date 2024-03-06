@@ -2,7 +2,7 @@
     <grid-layout
         :layout="layout"
         :col-num="2"
-        :row-height="30"
+        :row-height="70"
         :is-draggable="true"
         :is-resizable="false"
         :vertical-compact="true"
@@ -12,18 +12,26 @@
         </NoteGridItem> -->
         <grid-item
             v-for="item in layout"
+            :key="item.i"
             :static="item.static"
             :x="item.x"
             :y="item.y"
             :w="item.w"
             :h="item.h"
             :i="item.i"
-            :key="item.i"
         >
-            <span class="text">{{ item.title }}</span>
-            <span>
-                {{ item.description }}
-            </span>
+            <router-link
+                class="note-item-wrapper"
+                :to="{ name: 'view', params: { id: item.i } }"
+            >
+                <span class="note-item-text">{{ item.title }}</span>
+                <span class="note-item-description">
+                    {{ item.description }}
+                </span>
+                <div v-if="item.image_url" class="note-item-image">
+                    <img :src="item.image_url" />
+                </div>
+            </router-link>
         </grid-item>
     </grid-layout>
 </template>
@@ -36,7 +44,7 @@ export default {
     name: "NoteGrid",
     computed: {
         layout() {
-            const colsPerRow = 3;
+            const colsPerRow = 2;
             //format notes
             const notes = this.notes.map((note, index) => {
                 return {
@@ -44,10 +52,11 @@ export default {
                     title: note.title,
                     description: note.description,
                     x: index % colsPerRow,
-                    y: Math.floor(index / colsPerRow) * 3,
-                    w: 1,
-                    h: 3,
+                    y: Math.floor(index / colsPerRow) * 2,
+                    w: note.image_url ? 2 : 1,
+                    h: note.image_url ? 4 : 2,
                     static: false,
+                    image_url: note.image_url,
                 };
             });
             return notes;
