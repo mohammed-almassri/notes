@@ -1,7 +1,7 @@
 <template>
     <div class="note-menu">
         <div class="note-menu-start">
-            <button class="icon-button" title="add list">
+            <button class="icon-button" title="add list" @click="addList">
                 <img src="@/src/assets/img/icons/plus.svg" alt="add list" />
             </button>
             <button class="icon-button" title="add image" @click="addImage">
@@ -18,7 +18,7 @@
 import ExpandableMenu from "../UI/ExpandableMenu.vue";
 export default {
     components: { ExpandableMenu },
-    emits: ["add-image"],
+    emits: ["add-image", "add-list"],
     data() {
         return {
             imageIsUploading: false,
@@ -42,6 +42,9 @@ export default {
         };
     },
     methods: {
+        addList() {
+            this.$emit("add-list");
+        },
         addImage() {
             //open file picker
             const fileInput = document

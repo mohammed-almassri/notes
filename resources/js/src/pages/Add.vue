@@ -21,8 +21,12 @@
                 alt="note image"
                 class="add-note-image"
             />
+            <task-list
+                v-if="taskList !== null"
+                v-model:value="taskList"
+            ></task-list>
         </div>
-        <note-menu @addImage="onAddImage"></note-menu>
+        <note-menu @addImage="onAddImage" @addList="onAddList"></note-menu>
     </div>
 </template>
 
@@ -30,8 +34,9 @@
 import store from "@/src/store/index.js";
 import Note from "@/src/models/Note.js";
 import NoteMenu from "../components/notes/NoteMenu.vue";
+import TaskList from "../components/tasks/TaskList.vue";
 export default {
-    components: { NoteMenu },
+    components: { NoteMenu, TaskList },
     name: "Add",
     mounted() {
         if (this.$route.params.id) {
@@ -52,16 +57,18 @@ export default {
             noteImageURL: "",
             noteId: null,
             requestSent: false,
+            taskList: null,
         };
     },
     methods: {
         addOrUpdateNote() {
             if (this.requestSent) return;
-            console.log("id", this.noteId);
+            console.log("id", this.taskList);
             const data = {
                 title: this.noteTitle,
                 description: this.noteDescription,
                 image_url: this.noteImageURL,
+                tasks: this.taskList,
             };
             this.requestSent = true;
             if (this.noteId != null) {
@@ -83,6 +90,15 @@ export default {
         onAddImage(url) {
             this.noteImageURL = url;
             this.addOrUpdateNote();
+        },
+        onAddList() {
+            this.taskList = [
+                {
+                    id: 1,
+                    title: "",
+                    checked: false,
+                },
+            ];
         },
     },
 };

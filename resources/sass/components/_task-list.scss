@@ -1,0 +1,9 @@
+.task-list {
+    .add-task-btn {
+        background-color: transparent;
+        font-size: var(--font-xs);
+        color: var(--color-grey-dark);
+        display: inline !important;
+        width: fit-content;
+    }
+}

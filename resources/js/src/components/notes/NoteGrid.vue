@@ -24,12 +24,24 @@
                 class="note-item-wrapper"
                 :to="{ name: 'view', params: { id: item.i } }"
             >
-                <span class="note-item-text">{{ item.title }}</span>
-                <span class="note-item-description">
-                    {{ item.description }}
-                </span>
-                <div v-if="item.image_url" class="note-item-image">
-                    <img :src="item.image_url" />
+                <div
+                    v-if="item.image_url"
+                    class="note-item-image"
+                    :style="{ 'background-image': `url(${item.image_url})` }"
+                ></div>
+                <div
+                    v-if="item.title || item.description"
+                    class="note-item-details"
+                >
+                    <div v-if="item.title" class="note-item-text">
+                        {{ item.title }}
+                    </div>
+                    <div v-if="item.description" class="note-item-description">
+                        {{ item.description }}
+                    </div>
+                </div>
+                <div class="note-item-tasks" v-if="item.tasks">
+                    <static-task-list :tasks="item.tasks"></static-task-list>
                 </div>
             </router-link>
         </grid-item>
@@ -39,27 +51,59 @@
 <script>
 import NoteGridItem from "./NoteGridItem.vue";
 import { GridLayout, GridItem } from "vue3-grid-layout-next";
+import TaskList from "../tasks/TaskList.vue";
+import StaticTaskList from "../tasks/StaticTaskList.vue";
 export default {
-    components: { NoteGridItem, GridLayout, GridItem },
+    components: {
+        NoteGridItem,
+        GridLayout,
+        GridItem,
+        TaskList,
+        StaticTaskList,
+    },
     name: "NoteGrid",
     computed: {
         layout() {
-            const colsPerRow = 2;
-            //format notes
-            const notes = this.notes.map((note, index) => {
-                return {
-                    i: note.id,
-                    title: note.title,
-                    description: note.description,
-                    x: index % colsPerRow,
-                    y: Math.floor(index / colsPerRow) * 2,
-                    w: note.image_url ? 2 : 1,
-                    h: note.image_url ? 4 : 2,
-                    static: false,
-                    image_url: note.image_url,
-                };
-            });
-            return notes;
+            const gridColumns = 2;
+            let currentRow = 0;
+            let currentColumn = 0;
+            const items = this.notes;
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+
+                let rowspan, colspan;
+                if (item.image_url) {
+                    rowspan = 4;
+                    colspan = 2;
+                } else if (item.tasks) {
+                    rowspan = 3;
+                    colspan = 1;
+                } else if (item.title && item.description) {
+                    rowspan = 2;
+                    colspan = 1;
+                } else {
+                    rowspan = 1;
+                    colspan = 1;
+                }
+
+                const x = currentColumn;
+                const y = currentRow;
+
+                item.w = colspan;
+                item.h = rowspan;
+                item.x = x;
+                item.y = y;
+                item.i = item.id;
+                console.log(currentColumn, currentRow, item.y, item.x);
+
+                currentColumn += colspan;
+                if (currentColumn >= gridColumns) {
+                    currentRow += rowspan;
+                    currentColumn = 0;
+                }
+            }
+
+            return items;
         },
     },
     props: {

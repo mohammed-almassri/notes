@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Data\NoteData;
+use App\Data\TaskData;
 use App\Http\Controllers\Controller;
 use App\Repositories\Notes\NotesRepositoryInterface;
 use Illuminate\Http\Request;
@@ -34,7 +35,18 @@ class NotesController extends Controller
             $request->all(),
             ['user_id' => \Auth::id()]
         ));
-        $this->notesRepository->create($noteData->toArray());
+        $note = $this->notesRepository->create($noteData->toArray());
+
+        $tasksData = [];
+        foreach ($request->tasks as $task) {
+            $tasksData[] = TaskData::validateAndCreate(array_merge(
+                $task,
+                ['user_id' => \Auth::id(), 'note_id' => $note->id]
+            ));
+        }
+
+        $this->notesRepository->createTasks($note->id, array_map(fn($task) => $task->toArray(), $tasksData));
+
         return $noteData;
     }
 
