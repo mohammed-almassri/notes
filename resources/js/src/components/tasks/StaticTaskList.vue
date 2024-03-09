@@ -4,7 +4,7 @@
             <div class="task-list-item-content">
                 <input
                     type="checkbox"
-                    v-model="item.checked"
+                    v-model="item.done"
                     tabindex="-1"
                     disabled="disabled"
                 />

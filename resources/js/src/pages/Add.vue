@@ -50,12 +50,14 @@ export default {
             const note = this.$store.state.notes.notes.find(
                 (note) => note.id === this.$route.params.id
             );
-            this.noteId = this.$route.params.id;
-            this.noteImageURL = note.image_url;
+            this.noteSaved = true;
             console.log(note);
             if (note) {
                 this.noteTitle = note.title;
                 this.noteDescription = note.description;
+                this.noteId = this.$route.params.id;
+                this.noteImageURL = note.image_url;
+                this.taskList = note.tasks;
             }
         }
     },
@@ -68,22 +70,25 @@ export default {
             notePinnedAt: null,
             requestSent: false,
             taskList: null,
+            noteSaved: false,
         };
     },
     methods: {
         getNoteObject() {
+            console.log("get object task list", this.taskList);
             return {
                 id: this.noteId,
                 title: this.noteTitle,
                 description: this.noteDescription,
                 image_url: this.noteImageURL,
                 pinned_at: this.notePinnedAt,
+
                 tasks: this.taskList
                     ? this.taskList.map((task) => {
                           return {
                               id: task.id,
                               title: task.title,
-                              checked: task.checked,
+                              done: task.done,
                           };
                       })
                     : [],
@@ -107,7 +112,8 @@ export default {
             if (this.requestSent) return;
             const data = this.getNoteObject();
             this.requestSent = true;
-            if (this.noteId != null) {
+            console.log("add or update note", this.noteSaved);
+            if (this.noteSaved) {
                 data.id = this.noteId;
                 store.dispatch("notes/updateNote", data).finally(() => {
                     this.requestSent = false;
@@ -118,7 +124,9 @@ export default {
                 store
                     .dispatch("notes/addNote", data)
                     .then((res) => {
-                        this.noteId = res.id;
+                        console.log("note added", res);
+                        this.noteId = res.data.id;
+                        this.noteSaved = true;
                     })
                     .finally(() => {
                         this.requestSent = false;
@@ -134,9 +142,19 @@ export default {
                 {
                     id: uuid(),
                     title: "",
-                    checked: false,
+                    done: false,
                 },
             ];
+        },
+    },
+    watch: {
+        taskList: {
+            handler() {
+                console.log("tasks", this.taskList);
+
+                this.addOrUpdateNote();
+            },
+            deep: true,
         },
     },
 };

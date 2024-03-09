@@ -3,11 +3,12 @@ export default {
     namespaced: true,
     actions: {
         async addNote({ commit, state }, payload) {
-            await api.notes.store(payload);
+            const res = await api.notes.store(payload);
             commit('addNote', payload);
+            return res;
         },
         async updateNote({ commit, state }, payload) {
-            await api.notes.update(payload.id, payload);
+            const res = await api.notes.update(payload.id, payload);
             const notes = state.notes.map(note => {
                 if (note.id === payload.id) {
                     return payload;
@@ -15,15 +16,18 @@ export default {
                 return note;
             });
             commit('setNotes', notes);
+            return res;
         },
         async deleteNote({ commit, state }, id) {
-            await api.notes.delete(id);
+            const res = await api.notes.delete(id);
             const notes = state.notes.filter(note => note.id != id);
             commit('setNotes', notes);
+            return res;
         },
         async getNotes({ commit }) {
-            const response = await api.notes.index();
-            commit('setNotes', response.data);
+            const res = await api.notes.index();
+            commit('setNotes', res.data);
+            return res;
         },
         setNotes({ commit }, payload) {
             commit('setNotes', payload);

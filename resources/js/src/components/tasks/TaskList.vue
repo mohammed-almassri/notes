@@ -6,7 +6,7 @@
             :key="item.id"
         >
             <div class="task-list-item-content">
-                <input type="checkbox" v-model="item.checked" tabindex="-1" />
+                <input type="checkbox" v-model="item.done" tabindex="-1" />
                 <input
                     ref="titleInputs"
                     type="text"
@@ -43,10 +43,23 @@ export default {
         });
 
         // Watch for changes in content and update titleInputs ref
-        watch(content, () => {}, { deep: true });
+        watch(
+            content,
+            () => {
+                emit("update:value", content.value);
+            },
+            { deep: true }
+        );
 
         const onEnterClicked = (index) => {
-            addItem(index);
+            const nextItem = titleInputs.value.find((input) => {
+                return input.dataset.order == index + 1;
+            });
+            if (nextItem && nextItem.value.length === 0) {
+                focusItem(index + 1);
+            } else {
+                addItem(index);
+            }
         };
 
         const onBackspaceClicked = (item, index) => {
@@ -65,12 +78,12 @@ export default {
             // content.value.push({
             //     id: content.value.length + 1,
             //     title: "",
-            //     checked: false,
+            //     done: false,
             // });
             content.value.splice(index + 1, 0, {
                 id: uuid(),
                 title: "",
-                checked: false,
+                done: false,
             });
             nextTick(() => {
                 focusItem(index + 1);
@@ -89,7 +102,6 @@ export default {
             }
 
             const lastItemInput = titleInputs.value.find((input) => {
-                console.log(input.dataset.order, index);
                 return input.dataset.order == index;
             });
 

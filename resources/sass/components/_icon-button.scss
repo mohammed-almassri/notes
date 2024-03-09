@@ -11,8 +11,8 @@
         transition: filter 0.2s;
         width: 25px;
         height: auto;
-        filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg)
-            brightness(100%) contrast(100%);
+        //dark gray
+        filter: invert(0.8);
     }
     &:hover {
         background-color: var(--color-primary-bg);

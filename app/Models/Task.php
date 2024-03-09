@@ -17,5 +17,10 @@ class Task extends Model
         'user_id',
         'note_id',
         'parent_id',
+        'done',
+    ];
+
+    protected $casts = [
+        'done' => 'boolean',
     ];
 }

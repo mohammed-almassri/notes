@@ -12,6 +12,19 @@
         input[type="checkbox"] {
             margin-right: var(--space-xs);
         }
+
+        input[type="text"] {
+            border: none;
+            border-bottom: 1px solid var(--color-grey-dark);
+            background-color: transparent;
+            font-size: var(--font-md);
+            &:active,
+            &:focus {
+                border: none;
+                outline: none;
+                border-bottom: 1px solid var(--color-primary);
+            }
+        }
     }
 
     &.task-list-static {

@@ -14,6 +14,11 @@
     }
 
     .add-note-input-description {
+        height: 100px;
+        padding: var(--space-md);
+    }
+
+    .add-note-input-description {
         font-size: var(--font-sm);
     }
 }

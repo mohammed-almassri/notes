@@ -2,16 +2,22 @@
     <div class="note-menu">
         <div class="note-menu-start">
             <button class="icon-button" title="add list" @click="addList">
-                <img src="@/src/assets/img/icons/plus.svg" alt="add list" />
+                <img
+                    src="@/src/assets/img/icons/view-list.svg"
+                    alt="add list"
+                />
             </button>
             <button class="icon-button" title="add image" @click="addImage">
-                <img src="@/src/assets/img/icons/plus.svg" alt="add image" />
+                <img
+                    src="@/src/assets/img/icons/photograph.svg"
+                    alt="add image"
+                />
             </button>
             <button class="icon-button" title="pin" @click="pinItem">
-                <img src="@/src/assets/img/icons/plus.svg" alt="pin" />
+                <img src="@/src/assets/img/icons/pin.png" alt="pin" />
             </button>
             <button class="icon-button" title="delete" @click="deleteItem">
-                <img src="@/src/assets/img/icons/plus.svg" alt="delete" />
+                <img src="@/src/assets/img/icons/trash.svg" alt="delete" />
             </button>
         </div>
         <!-- <div class="note-menu-end">
@@ -21,11 +27,11 @@
 </template>
 
 <script>
-import moment from "moment";
 import ExpandableMenu from "../UI/ExpandableMenu.vue";
 export default {
     components: { ExpandableMenu },
     emits: ["add-image", "add-list", "pin-item", "delete-item"],
+
     data() {
         return {
             imageIsUploading: false,

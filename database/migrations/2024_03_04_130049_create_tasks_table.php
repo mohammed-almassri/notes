@@ -18,7 +18,7 @@ return new class extends Migration
             $table->mediumText('description')->nullable();
             $table->foreignUuid('note_id')->constrained('notes');
             $table->foreignIdFor(User::class, 'user_id');
-            $table->dateTime('done_at')->nullable();
+            $table->boolean('done')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });
