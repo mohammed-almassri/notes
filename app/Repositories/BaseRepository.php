@@ -20,7 +20,7 @@ class BaseRepository
         return $this->model::paginate($perPage);
     }
 
-    public function find(int $id)
+    public function find($id)
     {
         return $this->model::find($id);
     }
@@ -30,14 +30,14 @@ class BaseRepository
         return $this->model::create($data);
     }
 
-    public function update(int $id, array $data): Model
+    public function update($id, array $data): Model
     {
         $m = $this->find($id);
         $m->update($data);
         return $m;
     }
 
-    public function delete(int $id)
+    public function delete($id)
     {
         return $this->find($id)->delete();
     }

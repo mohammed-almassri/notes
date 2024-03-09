@@ -31,7 +31,7 @@
 
 <script>
 import { ref, watch, onMounted, nextTick } from "vue";
-
+import { v4 as uuid } from "uuid";
 export default {
     props: {
         value: {
@@ -74,7 +74,7 @@ export default {
             //     checked: false,
             // });
             content.value.splice(index + 1, 0, {
-                id: content.value.length + 1,
+                id: uuid(),
                 title: "",
                 checked: false,
             });
@@ -86,6 +86,7 @@ export default {
 
         const removeItem = (id) => {
             content.value = content.value.filter((item) => item.id !== id);
+            emit("update:value", content.value);
         };
 
         const focusItem = (index = null) => {

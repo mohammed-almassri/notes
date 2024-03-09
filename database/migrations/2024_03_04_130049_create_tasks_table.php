@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Note;
-use App\Models\Task;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,12 +13,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tasks', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('title')->nullable();
             $table->mediumText('description')->nullable();
-            $table->foreignIdFor(Note::class, 'note_id');
+            $table->foreignUuid('note_id')->constrained('notes');
             $table->foreignIdFor(User::class, 'user_id');
-            $table->foreignIdFor(Task::class, 'parent_id')->nullable();
+            $table->dateTime('done_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

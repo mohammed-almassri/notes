@@ -35,6 +35,7 @@ import store from "@/src/store/index.js";
 import Note from "@/src/models/Note.js";
 import NoteMenu from "../components/notes/NoteMenu.vue";
 import TaskList from "../components/tasks/TaskList.vue";
+import { v4 as uuid } from "uuid";
 export default {
     components: { NoteMenu, TaskList },
     name: "Add",
@@ -63,12 +64,19 @@ export default {
     methods: {
         addOrUpdateNote() {
             if (this.requestSent) return;
-            console.log("id", this.taskList);
             const data = {
                 title: this.noteTitle,
                 description: this.noteDescription,
                 image_url: this.noteImageURL,
-                tasks: this.taskList,
+                tasks: this.taskList
+                    ? this.taskList.map((task) => {
+                          return {
+                              id: task.id,
+                              title: task.title,
+                              checked: task.checked,
+                          };
+                      })
+                    : [],
             };
             this.requestSent = true;
             if (this.noteId != null) {
@@ -77,6 +85,8 @@ export default {
                     this.requestSent = false;
                 });
             } else {
+                this.noteId = uuid();
+                data.id = this.noteId;
                 store
                     .dispatch("notes/addNote", data)
                     .then((res) => {
@@ -94,7 +104,7 @@ export default {
         onAddList() {
             this.taskList = [
                 {
-                    id: 1,
+                    id: uuid(),
                     title: "",
                     checked: false,
                 },

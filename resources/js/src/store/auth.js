@@ -19,7 +19,7 @@ export default {
             return response
         },
         async logout({ commit }) {
-            const response = await api.auth.logout()
+            localStorage.removeItem('token')
             commit('setToken', null)
         },
         async user({ commit }) {

@@ -10,11 +10,11 @@ interface BaseRepositoryInterface
 
     public function paginate(int $perPage = 10);
 
-    public function find(int $id);
+    public function find($id);
 
     public function create(array $data): Model;
 
-    public function update(int $id, array $data): Model;
+    public function update($id, array $data): Model;
 
-    public function delete(int $id);
+    public function delete($id);
 }

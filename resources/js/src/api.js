@@ -23,7 +23,7 @@ export default {
             return axios.post('/notes', note);
         },
         update(id, note) {
-            return axios.post('/notes/' + id, note);
+            return axios.post('/notes/' + id, { ...note, '_method': 'PATCH' });
         }
     },
     files: {
