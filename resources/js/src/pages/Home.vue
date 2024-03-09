@@ -1,6 +1,7 @@
 <template>
     <div class="page page-home">
-        <template v-if="notes.length == 0">
+        <note-grid-loader v-if="!notesLoaded"> </note-grid-loader>
+        <template v-else-if="notes.length == 0">
             <div class="page-illustration">
                 <img src="@/src/assets/img/home.png" />
             </div>
@@ -28,13 +29,16 @@
 
 <script>
 import BottomMenu from "../components/layout/BottomMenu.vue";
+import NoteGridLoader from "../components/loaders/NoteGridLoader.vue";
 import NoteGrid from "../components/notes/NoteGrid.vue";
 import store from "../store/index.js";
 export default {
-    components: { NoteGrid, BottomMenu },
+    components: { NoteGrid, BottomMenu, NoteGridLoader },
     name: "Home",
     mounted() {
-        this.$store.dispatch("notes/getNotes");
+        this.$store.dispatch("notes/getNotes").then(() => {
+            this.notesLoaded = true;
+        });
     },
     computed: {
         notes() {
@@ -47,7 +51,9 @@ export default {
         },
     },
     data() {
-        return {};
+        return {
+            notesLoaded: false,
+        };
     },
 };
 </script>
