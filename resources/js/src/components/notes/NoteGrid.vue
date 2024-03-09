@@ -2,7 +2,7 @@
     <grid-layout
         :layout="layout"
         :col-num="2"
-        :row-height="70"
+        :row-height="50"
         :is-draggable="true"
         :is-resizable="false"
         :vertical-compact="true"
@@ -20,8 +20,14 @@
             :h="item.h"
             :i="item.i"
         >
-            <router-link
+            <div
                 class="note-item-wrapper"
+                :style="{
+                    'justify-content':
+                        item.tasks && item.tasks.length > 0
+                            ? 'start'
+                            : 'space-between',
+                }"
                 :to="{ name: 'view', params: { id: item.i } }"
             >
                 <div
@@ -30,7 +36,10 @@
                     :style="{ 'background-image': `url(${item.image_url})` }"
                 ></div>
                 <div
-                    v-if="item.title || item.description"
+                    v-if="
+                        !titleAndDescEqualURL(item) &&
+                        (item.title || item.description)
+                    "
                     class="note-item-details"
                 >
                     <div v-if="item.title" class="note-item-text">
@@ -40,36 +49,31 @@
                         {{ item.description }}
                     </div>
                 </div>
-                <div class="note-item-tasks" v-if="item.tasks">
-                    <static-task-list :tasks="item.tasks"></static-task-list>
+                <div
+                    class="note-item-tasks"
+                    v-if="item.tasks && item.tasks.length > 0"
+                >
+                    <static-task-list
+                        :tasks="item.tasks.slice(0, 6)"
+                    ></static-task-list>
                 </div>
                 <div class="note-item-url" v-if="item.url">
-                    <a
-                        v-if="!item.metadata_title"
-                        :href="item.url"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        >{{ item.url }}</a
-                    >
-                    <div v-else>
-                        <div>
-                            <img
-                                :src="item.metadata_image"
-                                alt="metadata image"
-                                width="100px"
-                            />
-                        </div>
-                        <div>
-                            <span>
-                                {{ item.metadata_title }}
-                            </span>
-                            <span>
-                                {{ item.url }}
-                            </span>
-                        </div>
+                    <div class="note-item-metadata-info">
+                        <span v-if="item.metadata_title">
+                            {{ item.metadata_title }}
+                        </span>
+                        <span v-else>
+                            {{ item.url }}
+                        </span>
                     </div>
+                    <div
+                        class="note-item-metadata-image"
+                        :style="{
+                            'background-image': `url(${item.metadata_image})`,
+                        }"
+                    ></div>
                 </div>
-            </router-link>
+            </div>
         </grid-item>
     </grid-layout>
 </template>
@@ -98,17 +102,46 @@ export default {
                 const item = items[i];
 
                 let rowspan, colspan;
-                if (item.image_url) {
-                    rowspan = 4;
-                    colspan = 2;
-                } else if (item.tasks) {
-                    rowspan = 3;
-                    colspan = 1;
-                } else if (item.title && item.description) {
-                    rowspan = 2;
-                    colspan = 1;
-                } else {
+                // if (item.image_url) {
+                //     rowspan = 4;
+                //     colspan = 2;
+                // } else if (item.tasks && item.tasks.length > 0) {
+                //     rowspan = 3;
+                //     colspan = 1;
+                // } else if (item.title && item.description) {
+                //     rowspan = 1;
+                //     colspan = 1;
+                // } else {
+                //     rowspan = 1;
+                //     colspan = 1;
+                // }
+
+                const units = {
+                    title: 1,
+                    description: 1,
+                    image_url: 3,
+                    tasks: 3,
+                    url: 1,
+                };
+
+                rowspan = 0;
+
+                for (const key in units) {
+                    if (
+                        item[key] &&
+                        (!Array.isArray(item[key]) || item[key].length > 0)
+                    ) {
+                        rowspan += units[key];
+                    }
+                }
+
+                if (rowspan === 0) {
                     rowspan = 1;
+                }
+
+                if (item.image_url) {
+                    colspan = 2;
+                } else {
                     colspan = 1;
                 }
 
@@ -120,7 +153,6 @@ export default {
                 item.x = x;
                 item.y = y;
                 item.i = item.id;
-                console.log(currentColumn, currentRow, item.y, item.x);
 
                 currentColumn += colspan;
                 if (currentColumn >= gridColumns) {
@@ -130,6 +162,14 @@ export default {
             }
 
             return items;
+        },
+    },
+    methods: {
+        titleAndDescEqualURL(note) {
+            return (
+                (note.url && note.title && note.url === note.title) ||
+                (note.url && note.description && note.url === note.description)
+            );
         },
     },
     props: {

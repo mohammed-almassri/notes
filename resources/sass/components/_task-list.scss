@@ -6,4 +6,19 @@
         display: inline !important;
         width: fit-content;
     }
+    .task-list-item-content {
+        display: flex;
+        align-items: center;
+        input[type="checkbox"] {
+            margin-right: var(--space-xs);
+        }
+    }
+
+    &.task-list-static {
+        .task-list-item-content {
+            .task-list-item-title {
+                color: var(--color-grey-dark);
+            }
+        }
+    }
 }

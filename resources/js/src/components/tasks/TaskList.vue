@@ -5,24 +5,18 @@
             v-for="(item, index) in content"
             :key="item.id"
         >
-            <div class="task-list-item__content">
-                <div class="task-list-item__content__title">
-                    <input
-                        type="checkbox"
-                        v-model="item.checked"
-                        tabindex="-1"
-                    />
-                    <input
-                        ref="titleInputs"
-                        type="text"
-                        v-model="item.title"
-                        :data-order="index"
-                        @keyup.enter="onEnterClicked(index)"
-                        @keyup.backspace="onBackspaceClicked(item, index)"
-                        @keyup.up="focusItem(index - 1)"
-                        @keyup.down="focusItem(index + 1)"
-                    />
-                </div>
+            <div class="task-list-item-content">
+                <input type="checkbox" v-model="item.checked" tabindex="-1" />
+                <input
+                    ref="titleInputs"
+                    type="text"
+                    v-model="item.title"
+                    :data-order="index"
+                    @keyup.enter="onEnterClicked(index)"
+                    @keyup.backspace="onBackspaceClicked(item, index)"
+                    @keyup.up="focusItem(index - 1)"
+                    @keyup.down="focusItem(index + 1)"
+                />
             </div>
         </div>
         <button class="add-task-btn" @click="addItem">Add Task</button>

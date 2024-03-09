@@ -16,27 +16,37 @@
             height: 100%;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
+            .note-item-tasks {
+                padding: 0 var(--space-sm);
+            }
             .note-item-details {
                 display: flex;
                 flex-direction: column;
-                justify-content: start;
+                justify-content: center;
                 overflow: hidden;
                 padding: var(--space-sm);
 
                 .note-item-text {
-                    padding: 10px;
-                    font-size: 1.2rem;
+                    padding: var(--space-sm);
+                    font-size: var(--font-lg);
                     color: var(--color-black);
                     padding: 0;
                 }
                 .note-item-description {
                     padding: 10px;
-                    font-size: 1rem;
+                    font-size: var(--font-md);
                     color: var(--color-grey-dark);
                     padding: 0;
+
+                    &:only-child {
+                        color: var(--color-black);
+                        font-size: var(--font-lg);
+                    }
                 }
 
                 &:only-child {
+                    justify-content: start;
                     height: 100%;
                 }
             }
@@ -52,6 +62,58 @@
                 background-clip: content-box;
                 & + .note-item-details {
                     height: 30%;
+                }
+            }
+
+            .note-item-url {
+                font-size: var(--font-md);
+                color: var(--color-grey-dark);
+                height: 30%;
+                display: flex;
+                background-color: var(--color-grey-light);
+                .note-item-metadata-info {
+                    border-bottom-left-radius: 5px;
+                    padding: var(--space-xs);
+                    width: 70%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    overflow: hidden;
+                    position: relative;
+                    border-radius: 5px;
+                    &::after {
+                        //gradient overlay from the bottom
+                        content: "";
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        height: 20%;
+                        background: linear-gradient(
+                            180deg,
+                            rgba(255, 255, 255, 0) 0%,
+                            var(--color-grey-light) 100%
+                        );
+                    }
+                }
+                .note-item-metadata-image {
+                    border-bottom-right-radius: 5px;
+                    width: 30%;
+                    height: 100%;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    background-clip: content-box;
+                }
+                &:only-child {
+                    height: 100%;
+                    // border radius
+                    .note-item-metadata-info {
+                        border-top-left-radius: 5px;
+                    }
+                    .note-item-metadata-image {
+                        border-top-right-radius: 5px;
+                    }
                 }
             }
         }
