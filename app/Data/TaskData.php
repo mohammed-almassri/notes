@@ -13,6 +13,7 @@ class TaskData extends Data
         public int $user_id,
         public string $note_id,
         public ?bool $done,
+        public int $order,
     ) {}
 
     public static function rules(): array
@@ -24,6 +25,7 @@ class TaskData extends Data
             'user_id' => ['required', 'integer', 'exists:users,id'],
             'note_id' => ['required', 'uuid', 'exists:notes,id'],
             'done' => ['nullable', 'boolean'],
+            'order' => ['required', 'integer'],
         ];
     }
 }

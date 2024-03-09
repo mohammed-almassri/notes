@@ -83,15 +83,7 @@ export default {
                 image_url: this.noteImageURL,
                 pinned_at: this.notePinnedAt,
 
-                tasks: this.taskList
-                    ? this.taskList.map((task) => {
-                          return {
-                              id: task.id,
-                              title: task.title,
-                              done: task.done,
-                          };
-                      })
-                    : [],
+                tasks: this.taskList ? this.taskList : [],
             };
         },
         onDeleteItem() {
@@ -143,6 +135,7 @@ export default {
                     id: uuid(),
                     title: "",
                     done: false,
+                    order: 0,
                 },
             ];
         },

@@ -2,7 +2,7 @@
     <div class="task-list">
         <div
             class="task-list-item"
-            v-for="(item, index) in content"
+            v-for="(item, index) in content.sort((a, b) => a.order - b.order)"
             :key="item.id"
         >
             <div class="task-list-item-content">
@@ -26,6 +26,7 @@
 <script>
 import { ref, watch, onMounted, nextTick } from "vue";
 import { v4 as uuid } from "uuid";
+
 export default {
     props: {
         value: {
@@ -84,6 +85,7 @@ export default {
                 id: uuid(),
                 title: "",
                 done: false,
+                order: index + 1,
             });
             nextTick(() => {
                 focusItem(index + 1);

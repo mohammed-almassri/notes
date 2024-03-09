@@ -31,6 +31,9 @@
         .task-list-item-content {
             .task-list-item-title {
                 color: var(--color-grey-dark);
+                &.done {
+                    text-decoration: line-through;
+                }
             }
         }
     }

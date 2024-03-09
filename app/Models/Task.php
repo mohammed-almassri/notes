@@ -18,7 +18,11 @@ class Task extends Model
         'note_id',
         'parent_id',
         'done',
+        'order',
     ];
+
+    protected $order = 'order';
+    protected $orderDirection = 'asc';
 
     protected $casts = [
         'done' => 'boolean',

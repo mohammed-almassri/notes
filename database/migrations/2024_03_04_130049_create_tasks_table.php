@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignUuid('note_id')->constrained('notes');
             $table->foreignIdFor(User::class, 'user_id');
             $table->boolean('done')->default(false);
+            $table->integer('order')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });
