@@ -15,5 +15,6 @@ export default {
     home: {
         home_title: 'Start Your Journey',
         home_description: 'Every big step start with small step. Notes your first idea and start your journey!',
+        pinned_notes: 'Pinned',
     }
 }

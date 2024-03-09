@@ -62,6 +62,10 @@ class NotesRepository extends BaseRepository implements NotesRepositoryInterface
             $metadata = $this->metadataService->getMetadata($note->url);
             $note->metadata_title = $metadata->title;
             $note->metadata_image = $metadata->image;
+        } else if (!$url) {
+            $note->url = null;
+            $note->metadata_title = null;
+            $note->metadata_image = null;
         }
 
         $note->save();

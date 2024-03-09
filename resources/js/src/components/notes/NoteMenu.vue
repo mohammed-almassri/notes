@@ -7,43 +7,56 @@
             <button class="icon-button" title="add image" @click="addImage">
                 <img src="@/src/assets/img/icons/plus.svg" alt="add image" />
             </button>
+            <button class="icon-button" title="pin" @click="pinItem">
+                <img src="@/src/assets/img/icons/plus.svg" alt="pin" />
+            </button>
+            <button class="icon-button" title="delete" @click="deleteItem">
+                <img src="@/src/assets/img/icons/plus.svg" alt="delete" />
+            </button>
         </div>
-        <div class="note-menu-end">
+        <!-- <div class="note-menu-end">
             <expandable-menu :options="menuOptions"></expandable-menu>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script>
+import moment from "moment";
 import ExpandableMenu from "../UI/ExpandableMenu.vue";
 export default {
     components: { ExpandableMenu },
-    emits: ["add-image", "add-list"],
+    emits: ["add-image", "add-list", "pin-item", "delete-item"],
     data() {
         return {
             imageIsUploading: false,
-            menuOptions: [
-                {
-                    title: "test",
-                    value: "test1",
-                    image: "@/src/assets/img/icons/plus.svg",
-                },
-                {
-                    title: "test",
-                    value: "test2",
-                    image: "@/src/assets/img/icons/plus.svg",
-                },
-                {
-                    title: "test",
-                    value: "test3",
-                    image: "@/src/assets/img/icons/plus.svg",
-                },
-            ],
+            // menuOptions: [
+            //     {
+            //         title: "test",
+            //         value: "test1",
+            //         image: "@/src/assets/img/icons/plus.svg",
+            //     },
+            //     {
+            //         title: "test",
+            //         value: "test2",
+            //         image: "@/src/assets/img/icons/plus.svg",
+            //     },
+            //     {
+            //         title: "test",
+            //         value: "test3",
+            //         image: "@/src/assets/img/icons/plus.svg",
+            //     },
+            // ],
         };
     },
     methods: {
         addList() {
             this.$emit("add-list");
+        },
+        deleteItem() {
+            this.$emit("delete-item");
+        },
+        pinItem() {
+            this.$emit("pin-item");
         },
         addImage() {
             //open file picker

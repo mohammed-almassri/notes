@@ -9,7 +9,19 @@
                 {{ $t("home.home_description") }}
             </p>
         </template>
-        <NoteGrid v-else :notes="notes"></NoteGrid>
+        <template v-else>
+            <div
+                class="pinned-notes"
+                v-if="pinnedNotes && pinnedNotes.length > 0"
+            >
+                <h2>
+                    {{ $t("home.pinned_notes") }}
+                </h2>
+                <NoteGrid :notes="pinnedNotes"></NoteGrid>
+                <hr />
+            </div>
+            <NoteGrid :notes="notes"></NoteGrid>
+        </template>
         <bottom-menu></bottom-menu>
     </div>
 </template>
@@ -26,7 +38,12 @@ export default {
     },
     computed: {
         notes() {
-            return store.state.notes.notes;
+            return store.state.notes.notes.filter(
+                (note) => note.pinned_at == null
+            );
+        },
+        pinnedNotes() {
+            return store.state.notes.notes.filter((note) => note.pinned_at);
         },
     },
     data() {

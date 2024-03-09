@@ -16,6 +16,11 @@ export default {
             });
             commit('setNotes', notes);
         },
+        async deleteNote({ commit, state }, id) {
+            await api.notes.delete(id);
+            const notes = state.notes.filter(note => note.id != id);
+            commit('setNotes', notes);
+        },
         async getNotes({ commit }) {
             const response = await api.notes.index();
             commit('setNotes', response.data);

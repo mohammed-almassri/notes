@@ -26,7 +26,12 @@
                 v-model:value="taskList"
             ></task-list>
         </div>
-        <note-menu @addImage="onAddImage" @addList="onAddList"></note-menu>
+        <note-menu
+            @addImage="onAddImage"
+            @addList="onAddList"
+            @pin-item="onPinItem"
+            @delete-item="onDeleteItem"
+        ></note-menu>
     </div>
 </template>
 
@@ -36,6 +41,7 @@ import Note from "@/src/models/Note.js";
 import NoteMenu from "../components/notes/NoteMenu.vue";
 import TaskList from "../components/tasks/TaskList.vue";
 import { v4 as uuid } from "uuid";
+import moment from "moment";
 export default {
     components: { NoteMenu, TaskList },
     name: "Add",
@@ -44,6 +50,8 @@ export default {
             const note = this.$store.state.notes.notes.find(
                 (note) => note.id === this.$route.params.id
             );
+            this.noteId = this.$route.params.id;
+            this.noteImageURL = note.image_url;
             console.log(note);
             if (note) {
                 this.noteTitle = note.title;
@@ -57,17 +65,19 @@ export default {
             noteDescription: "",
             noteImageURL: "",
             noteId: null,
+            notePinnedAt: null,
             requestSent: false,
             taskList: null,
         };
     },
     methods: {
-        addOrUpdateNote() {
-            if (this.requestSent) return;
-            const data = {
+        getNoteObject() {
+            return {
+                id: this.noteId,
                 title: this.noteTitle,
                 description: this.noteDescription,
                 image_url: this.noteImageURL,
+                pinned_at: this.notePinnedAt,
                 tasks: this.taskList
                     ? this.taskList.map((task) => {
                           return {
@@ -78,6 +88,24 @@ export default {
                       })
                     : [],
             };
+        },
+        onDeleteItem() {
+            console;
+            this.$store.dispatch("notes/deleteNote", this.noteId).then(() => {
+                this.$router.replace("/");
+            });
+        },
+        onPinItem() {
+            this.$store.dispatch("notes/updateNote", {
+                ...this.getNoteObject(),
+                pinned_at: this.notePinnedAt
+                    ? null
+                    : moment().format("YYYY-MM-DD HH:mm:ss"),
+            });
+        },
+        addOrUpdateNote() {
+            if (this.requestSent) return;
+            const data = this.getNoteObject();
             this.requestSent = true;
             if (this.noteId != null) {
                 data.id = this.noteId;

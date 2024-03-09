@@ -24,6 +24,9 @@ export default {
         },
         update(id, note) {
             return axios.post('/notes/' + id, { ...note, '_method': 'PATCH' });
+        },
+        delete(id) {
+            return axios.post('/notes/' + id, { '_method': 'DELETE' });
         }
     },
     files: {

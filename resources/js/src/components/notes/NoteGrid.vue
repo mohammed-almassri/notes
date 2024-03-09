@@ -19,6 +19,7 @@
             :w="item.w"
             :h="item.h"
             :i="item.i"
+            @click="goToViewPage(item)"
         >
             <div
                 class="note-item-wrapper"
@@ -28,7 +29,6 @@
                             ? 'start'
                             : 'space-between',
                 }"
-                :to="{ name: 'view', params: { id: item.i } }"
             >
                 <div
                     v-if="item.image_url"
@@ -102,19 +102,6 @@ export default {
                 const item = items[i];
 
                 let rowspan, colspan;
-                // if (item.image_url) {
-                //     rowspan = 4;
-                //     colspan = 2;
-                // } else if (item.tasks && item.tasks.length > 0) {
-                //     rowspan = 3;
-                //     colspan = 1;
-                // } else if (item.title && item.description) {
-                //     rowspan = 1;
-                //     colspan = 1;
-                // } else {
-                //     rowspan = 1;
-                //     colspan = 1;
-                // }
 
                 const units = {
                     title: 1,
@@ -170,6 +157,10 @@ export default {
                 (note.url && note.title && note.url === note.title) ||
                 (note.url && note.description && note.url === note.description)
             );
+        },
+        goToViewPage(item) {
+            console.log("go");
+            this.$router.push({ name: "view", params: { id: item.i } });
         },
     },
     props: {

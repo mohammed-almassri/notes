@@ -18,7 +18,8 @@ class NoteData extends Data
         public ?array $tasks = [],
         public ?string $url = null,
         public ?string $metadata_title = null,
-        public ?string $metadata_image = null
+        public ?string $metadata_image = null,
+        public ?string $pinned_at = null,
     ) {}
 
     public static function rules(): array
@@ -29,6 +30,7 @@ class NoteData extends Data
             'description' => ['nullable', 'string'],
             'image_url' => ['nullable', 'string', 'url', 'max:255'],
             'user_id' => ['required', 'integer', 'exists:users,id'],
+            'pinned_at' => ['nullable', 'date', 'date_format:Y-m-d H:i:s'],
         ];
     }
 }
