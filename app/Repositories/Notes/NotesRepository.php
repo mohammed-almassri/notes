@@ -4,12 +4,16 @@ namespace App\Repositories\Notes;
 
 use App\Models\Note;
 use App\Repositories\BaseRepository;
+use App\Services\Metadata\MetadataServiceInterface;
+use Illuminate\Database\Eloquent\Model;
 
 class NotesRepository extends BaseRepository implements NotesRepositoryInterface
 {
-    public function __construct()
+    private MetadataServiceInterface $metadataService;
+    public function __construct(MetadataServiceInterface $metadataService)
     {
         parent::__construct(Note::class);
+        $this->metadataService = $metadataService;
     }
 
     public function all()
@@ -27,9 +31,6 @@ class NotesRepository extends BaseRepository implements NotesRepositoryInterface
     {
         $note = $this->find($noteId);
         $tasks = $note->tasks;
-        //split the data into two arrays, one for the tasks to be created and one for the tasks to be updated
-        //the data where the id is not in the tasks array will be used to create new tasks
-        //the data where the id is in the tasks array will be used to update the existing tasks
 
         $tasksToCreate = array_filter($data, fn($task) => !in_array($task['id'], array_column($tasks->toArray(), 'id')));
         $tasksToUpdate = array_filter($data, fn($task) => in_array($task['id'], array_column($tasks->toArray(), 'id')));
@@ -39,10 +40,30 @@ class NotesRepository extends BaseRepository implements NotesRepositoryInterface
             $note->tasks()->where('id', $task['id'])->update($task);
         }
 
-        //get the ids of the tasks that are not in the data array and delete them
-
         $tasksToDelete = array_filter($tasks->toArray(), fn($task) => !in_array($task['id'], array_column($data, 'id')));
         $note->tasks()->whereIn('id', array_column($tasksToDelete, 'id'))->delete();
+    }
 
+    public function setNoteUrl(Model $note)
+    {
+        $titleURL = preg_match('/\bhttps?:\/\/\S+\.\S+\b/', $note->title, $matches);
+        $url = null;
+        if ($titleURL) {
+            $url = $matches[0];
+        } else {
+            $descriptionURL = preg_match('/\bhttps?:\/\/\S+\.\S+\b/', $note->description, $matches);
+            if ($descriptionURL) {
+                $url = $matches[0];
+            }
+        }
+
+        if ($url && $note->url !== $url) {
+            $note->url = $url;
+            $metadata = $this->metadataService->getMetadata($note->url);
+            $note->metadata_title = $metadata->title;
+            $note->metadata_image = $metadata->image;
+        }
+
+        $note->save();
     }
 }

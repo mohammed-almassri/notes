@@ -43,6 +43,32 @@
                 <div class="note-item-tasks" v-if="item.tasks">
                     <static-task-list :tasks="item.tasks"></static-task-list>
                 </div>
+                <div class="note-item-url" v-if="item.url">
+                    <a
+                        v-if="!item.metadata_title"
+                        :href="item.url"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >{{ item.url }}</a
+                    >
+                    <div v-else>
+                        <div>
+                            <img
+                                :src="item.metadata_image"
+                                alt="metadata image"
+                                width="100px"
+                            />
+                        </div>
+                        <div>
+                            <span>
+                                {{ item.metadata_title }}
+                            </span>
+                            <span>
+                                {{ item.url }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </router-link>
         </grid-item>
     </grid-layout>

@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('image_url')->nullable();
             $table->foreignIdFor(User::class, 'user_id');
             $table->tinyInteger('type_id')->default(\NoteType::Text->value);
+            $table->string('url')->nullable();
+            $table->string('metadata_title')->nullable();
+            $table->string('metadata_image')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

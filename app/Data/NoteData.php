@@ -16,6 +16,9 @@ class NoteData extends Data
         public ?string $image_url = null,
         public int $user_id,
         public ?array $tasks = [],
+        public ?string $url = null,
+        public ?string $metadata_title = null,
+        public ?string $metadata_image = null
     ) {}
 
     public static function rules(): array

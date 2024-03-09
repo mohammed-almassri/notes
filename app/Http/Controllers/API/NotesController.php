@@ -36,7 +36,7 @@ class NotesController extends Controller
             ['user_id' => \Auth::id()]
         ));
         $note = $this->notesRepository->create($noteData->toArray());
-
+        $this->notesRepository->setNoteUrl($note);
         $tasksData = [];
         foreach ($request->tasks as $task) {
             $tasksData[] = TaskData::validateAndCreate(array_merge(
@@ -64,6 +64,8 @@ class NotesController extends Controller
     public function update(Request $request, $id)
     {
         $note = $this->notesRepository->update($id, $request->all());
+        $this->notesRepository->setNoteUrl($note);
+
         $tasksData = [];
         foreach ($request->tasks as $task) {
             $tasksData[] = TaskData::validateAndCreate(array_merge(
