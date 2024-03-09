@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::group(['middleware' => [], 'namespace' => 'App\\Http\\Controllers\\API', 'as' => 'api.'], function () {
+Route::group(['middleware' => ['db-transaction'], 'namespace' => 'App\\Http\\Controllers\\API', 'as' => 'api.'], function () {
 
     Route::group(['prefix' => 'auth'], function () {
         Route::post('login', 'AuthController@login');
