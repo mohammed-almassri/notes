@@ -10,9 +10,12 @@
     align-items: center;
     .note-menu-start {
         display: flex;
-        justify-content: space-between;
+        justify-content: start;
         padding: 0 var(--site-padding-x);
         flex-grow: 1;
+        & > * {
+            margin-right: var(--space-lg);
+        }
     }
     .note-menu-end {
         flex-grow: 1;

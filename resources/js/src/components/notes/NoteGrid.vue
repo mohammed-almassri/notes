@@ -54,7 +54,16 @@
                     v-if="item.tasks && item.tasks.length > 0"
                 >
                     <static-task-list
-                        :tasks="item.tasks.slice(0, 6)"
+                        :tasks="
+                            item.tasks
+                                .sort((a, b) => {
+                                    if (a.done && !b.done) return 1;
+                                    if (!a.done && b.done) return -1;
+                                    return a.order - b.order;
+                                })
+
+                                .slice(0, 6)
+                        "
                     ></static-task-list>
                 </div>
                 <div class="note-item-url" v-if="item.url">
@@ -134,11 +143,7 @@ export default {
                     rowspan = 1;
                 }
 
-                if (item.image_url) {
-                    colspan = 2;
-                } else {
-                    colspan = 1;
-                }
+                colspan = 1;
 
                 const x = currentColumn;
                 const y = currentRow;

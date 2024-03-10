@@ -10,17 +10,35 @@
                 v-model="noteTitle"
             />
             <textarea
+                v-if="noteDescription || !taskList || taskList.length === 0"
                 class="add-note-input-description"
                 placeholder="additional info"
                 @blur="addOrUpdateNote"
                 v-model="noteDescription"
+                ref="textarea"
+                @input="resizeTextarea"
+                rows="1"
             ></textarea>
-            <img
-                v-if="noteImageURL"
-                :src="noteImageURL"
-                alt="note image"
-                class="add-note-image"
-            />
+            <div class="add-note-image-wrapper" v-if="noteImageURL">
+                <img
+                    v-if="noteImageURL"
+                    :src="noteImageURL"
+                    alt="note image"
+                    class="add-note-image"
+                    width="200px"
+                    height="auto"
+                />
+                <button
+                    class="remove-btn"
+                    title="remove image"
+                    @click="onAddImage(null)"
+                >
+                    <img
+                        src="@/src/assets/img/icons/x.svg"
+                        alt="remove image"
+                    />
+                </button>
+            </div>
             <task-list
                 v-if="taskList !== null"
                 v-model:value="taskList"
@@ -77,6 +95,11 @@ export default {
         };
     },
     methods: {
+        resizeTextarea() {
+            const textarea = this.$refs.textarea;
+            textarea.style.height = "auto"; // Reset height to auto
+            textarea.style.height = `${textarea.scrollHeight}px`; // Set height to scrollHeight
+        },
         getNoteObject() {
             console.log("get object task list", this.taskList);
             return {

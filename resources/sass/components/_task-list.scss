@@ -11,30 +11,40 @@
         align-items: center;
         input[type="checkbox"] {
             margin-right: var(--space-xs);
-        }
-
-        input[type="text"] {
-            border: none;
-            border-bottom: 1px solid var(--color-grey-dark);
-            background-color: transparent;
-            font-size: var(--font-md);
-            &:active,
-            &:focus {
-                border: none;
-                outline: none;
-                border-bottom: 1px solid var(--color-primary);
-            }
-        }
-    }
-
-    &.task-list-static {
-        .task-list-item-content {
-            .task-list-item-title {
-                color: var(--color-grey-dark);
-                &.done {
+            &:checked {
+                + .task-list-item-title {
+                    color: var(--color-grey-dark);
                     text-decoration: line-through;
                 }
             }
         }
+
+        input[type="text"] {
+            border: none;
+            // border-bottom: 1px solid var(--color-grey-dark);
+            background-color: transparent;
+            font-size: var(--font-md);
+            border-radius: 0 !important;
+            transition: border 0.2s;
+            &:active,
+            &:focus {
+                border: none;
+                outline: none;
+                // border-bottom: 2px solid var(--color-primary);
+            }
+        }
+
+        .task-list-item-title {
+            color: var(--color-grey-dark);
+            &.done {
+                text-decoration: line-through;
+            }
+        }
     }
+
+    // &.task-list-static {
+    //     .task-list-item-content {
+
+    //     }
+    // }
 }

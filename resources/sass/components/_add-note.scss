@@ -11,14 +11,47 @@
             border: none;
             outline: none;
         }
+        margin: var(--space-sm) 0;
+        width: 100%;
     }
 
     .add-note-input-description {
         height: 100px;
-        padding: var(--space-md);
+        resize: none;
+        overflow: hidden;
     }
 
     .add-note-input-description {
         font-size: var(--font-sm);
+    }
+
+    .add-note-image-wrapper {
+        position: relative;
+        width: fit-content;
+        .remove-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--color-danger);
+            opacity: 0;
+            transition: opacity 0.3s;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            img {
+                width: 15px;
+                height: 15px;
+                filter: invert(1);
+            }
+        }
+
+        &:hover {
+            .remove-btn {
+                opacity: 1;
+            }
+        }
     }
 }
