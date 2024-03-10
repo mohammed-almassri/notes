@@ -7,12 +7,18 @@
                     alt="add list"
                 />
             </button>
-            <button class="icon-button" title="add image" @click="addImage">
+            <span>
+                <input
+                    class="icon-button"
+                    title="add image"
+                    type="file"
+                    @change="onFilePicked"
+                />
                 <img
                     src="@/src/assets/img/icons/photograph.svg"
                     alt="add image"
                 />
-            </button>
+            </span>
             <button class="icon-button" title="pin" @click="pinItem">
                 <img src="@/src/assets/img/icons/pin.png" alt="pin" />
             </button>
@@ -34,38 +40,13 @@
 
 <script>
 import moment from "moment";
-import ExpandableMenu from "../UI/ExpandableMenu.vue";
 export default {
-    components: { ExpandableMenu },
     emits: ["add-image", "add-list", "pin-item", "delete-item"],
     props: {
         note: {
             required: true,
             type: Object,
         },
-    },
-    data() {
-        return {
-            imageIsUploading: false,
-            moment,
-            // menuOptions: [
-            //     {
-            //         title: "test",
-            //         value: "test1",
-            //         image: "@/src/assets/img/icons/plus.svg",
-            //     },
-            //     {
-            //         title: "test",
-            //         value: "test2",
-            //         image: "@/src/assets/img/icons/plus.svg",
-            //     },
-            //     {
-            //         title: "test",
-            //         value: "test3",
-            //         image: "@/src/assets/img/icons/plus.svg",
-            //     },
-            // ],
-        };
     },
     methods: {
         addList() {
@@ -77,37 +58,37 @@ export default {
         pinItem() {
             this.$emit("pin-item");
         },
-        addImage() {
-            //open file picker
-            const fileInput = document
-                .querySelector("body")
-                .appendChild(document.createElement("input"));
-
+        onFilePicked(e) {
+            const file = e.target.files[0];
+            const formData = new FormData();
+            formData.append("file", file);
+            this.imageIsUploading = true;
+            this.$store
+                .dispatch("files/upload", formData)
+                .then((res) => {
+                    console.log(res);
+                    this.$emit("add-image", res.url);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+                .finally(() => {
+                    document.body.removeChild(fileInput);
+                });
+        },
+        openFilePicker() {
+            const fileInput = document.createElement("input");
             fileInput.type = "file";
             fileInput.accept = "image/*";
-            fileInput.click();
+            fileInput.style.display = "none";
 
-            fileInput.addEventListener("change", (e) => {
-                const file = e.target.files[0];
-                //create form data object
-                const formData = new FormData();
-                formData.append("file", file);
-                this.imageIsUploading = true;
-                this.$store
-                    .dispatch("files/upload", formData)
-                    .then((res) => {
-                        console.log(res);
-                        this.$emit("add-image", res.url);
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    })
-                    .finally(() => {
-                        fileInput.remove();
-                    });
-            });
-            fileInput.remove();
+            fileInput.addEventListener("change", onFilePicked);
+
+            document.body.appendChild(fileInput);
+            fileInput.click();
         },
     },
 };
 </script>
+
+<style></style>

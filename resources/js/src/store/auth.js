@@ -24,7 +24,6 @@ export default {
         },
         async user({ commit }) {
             const response = await api.auth.user()
-            commit('setToken', response.data.token)
             commit('setUser', response.data.user)
             return response
         },
@@ -33,6 +32,7 @@ export default {
             const token = localStorage.getItem('token')
             if (token) {
                 commit('setToken', token)
+                console.log('setToken', token);
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
             }
         }
@@ -40,6 +40,7 @@ export default {
     },
     mutations: {
         setToken(state, token) {
+            console.log('setToken 2', token);
             state.token = token
         },
         setUser(state, user) {
