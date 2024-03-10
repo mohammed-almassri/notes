@@ -13,6 +13,7 @@ export default {
     },
     mounted() {
         this.$store.dispatch("auth/initAuth");
+        this.$store.dispatch("auth/user");
     },
 };
 </script>

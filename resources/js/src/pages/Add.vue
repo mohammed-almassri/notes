@@ -31,6 +31,7 @@
             @addList="onAddList"
             @pin-item="onPinItem"
             @delete-item="onDeleteItem"
+            :note="note"
         ></note-menu>
     </div>
 </template>
@@ -53,6 +54,7 @@ export default {
             this.noteSaved = true;
             console.log(note);
             if (note) {
+                this.note = note;
                 this.noteTitle = note.title;
                 this.noteDescription = note.description;
                 this.noteId = this.$route.params.id;
@@ -71,6 +73,7 @@ export default {
             requestSent: false,
             taskList: null,
             noteSaved: false,
+            note: null,
         };
     },
     methods: {

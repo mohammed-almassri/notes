@@ -9,9 +9,16 @@
     justify-content: space-around;
     align-items: center;
     .note-menu-start {
-        width: 100%;
         display: flex;
         justify-content: space-between;
         padding: 0 var(--site-padding-x);
+        flex-grow: 1;
+    }
+    .note-menu-end {
+        flex-grow: 1;
+        text-align: end;
+        padding: 0 var(--site-padding-x);
+        font-size: var(--font-sm);
+        color: var(--color-grey-dark);
     }
 }

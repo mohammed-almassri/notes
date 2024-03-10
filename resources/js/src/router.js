@@ -29,7 +29,15 @@ const routes = [
       auth: true
     }
   },
-  //auth routes
+  {
+    path: '/profile/',
+    name: 'profile',
+    component: () => import('./pages/Profile.vue'),
+    meta: {
+      title: 'Profile',
+      auth: true
+    }
+  },
   {
     path: '/login',
     name: 'login',

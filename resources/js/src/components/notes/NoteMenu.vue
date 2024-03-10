@@ -20,21 +20,34 @@
                 <img src="@/src/assets/img/icons/trash.svg" alt="delete" />
             </button>
         </div>
-        <!-- <div class="note-menu-end">
-            <expandable-menu :options="menuOptions"></expandable-menu>
-        </div> -->
+        <div class="note-menu-end" :title="note ? note.updated_at : ''">
+            {{
+                note
+                    ? $t("notes.last_updated", {
+                          date: moment(note.updated_at).fromNow(),
+                      })
+                    : ""
+            }}
+        </div>
     </div>
 </template>
 
 <script>
+import moment from "moment";
 import ExpandableMenu from "../UI/ExpandableMenu.vue";
 export default {
     components: { ExpandableMenu },
     emits: ["add-image", "add-list", "pin-item", "delete-item"],
-
+    props: {
+        note: {
+            required: true,
+            type: Object,
+        },
+    },
     data() {
         return {
             imageIsUploading: false,
+            moment,
             // menuOptions: [
             //     {
             //         title: "test",
