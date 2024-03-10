@@ -1,7 +1,8 @@
 <template>
     <div class="page page-add">
         <router-link to="/">Home</router-link>
-        <div class="add-note">
+        <add-page-loader v-if="!notesLoaded"></add-page-loader>
+        <div v-else class="add-note">
             <input
                 type="text"
                 class="add-note-input-title"
@@ -61,28 +62,42 @@ import NoteMenu from "../components/notes/NoteMenu.vue";
 import TaskList from "../components/tasks/TaskList.vue";
 import { v4 as uuid } from "uuid";
 import moment from "moment";
+import AddPageLoader from "../components/loaders/AddPageLoader.vue";
 export default {
-    components: { NoteMenu, TaskList },
+    components: { NoteMenu, TaskList, AddPageLoader },
     name: "Add",
     mounted() {
-        if (this.$route.params.id) {
-            const note = this.$store.state.notes.notes.find(
-                (note) => note.id === this.$route.params.id
-            );
-            this.noteSaved = true;
-            console.log(note);
-            if (note) {
-                this.note = note;
-                this.noteTitle = note.title;
-                this.noteDescription = note.description;
-                this.noteId = this.$route.params.id;
-                this.noteImageURL = note.image_url;
-                this.taskList = note.tasks;
+        const onMounted = () => {
+            if (this.$route.params.id) {
+                const note = this.$store.state.notes.notes.find(
+                    (note) => note.id === this.$route.params.id
+                );
+                this.noteSaved = true;
+                console.log(note);
+                if (note) {
+                    this.note = note;
+                    this.noteTitle = note.title;
+                    this.noteDescription = note.description;
+                    this.noteId = this.$route.params.id;
+                    this.noteImageURL = note.image_url;
+                    this.taskList = note.tasks;
+                }
             }
+        };
+
+        if (this.$store.state.notes.notes.length === 0) {
+            this.$store.dispatch("notes/getNotes").then(() => {
+                this.notesLoaded = true;
+                onMounted();
+            });
+        } else {
+            this.notesLoaded = true;
+            onMounted();
         }
     },
     data() {
         return {
+            notesLoaded: false,
             noteTitle: "",
             noteDescription: "",
             noteImageURL: "",

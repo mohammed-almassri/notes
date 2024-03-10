@@ -55,3 +55,19 @@
         }
     }
 }
+
+.add-page-loader {
+    .loader-item {
+        width: 100%;
+        animation: loader 1.5s ease-in-out infinite;
+        height: 50px;
+        &:nth-child(2) {
+            margin: var(--space-sm) 0;
+            height: 100px;
+        }
+        &:nth-child(3) {
+            margin: var(--space-sm) 0;
+            height: 100px;
+        }
+    }
+}
