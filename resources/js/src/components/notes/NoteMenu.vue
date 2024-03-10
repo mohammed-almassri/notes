@@ -7,18 +7,16 @@
                     alt="add list"
                 />
             </button>
-            <span>
-                <input
-                    class="icon-button"
-                    title="add image"
-                    type="file"
-                    @change="onFilePicked"
-                />
+            <button
+                class="icon-button"
+                title="add image"
+                @click="openFilePicker"
+            >
                 <img
                     src="@/src/assets/img/icons/photograph.svg"
                     alt="add image"
                 />
-            </span>
+            </button>
             <button class="icon-button" title="pin" @click="pinItem">
                 <img src="@/src/assets/img/icons/pin.png" alt="pin" />
             </button>
@@ -58,34 +56,33 @@ export default {
         pinItem() {
             this.$emit("pin-item");
         },
-        onFilePicked(e) {
-            const file = e.target.files[0];
-            const formData = new FormData();
-            formData.append("file", file);
-            this.imageIsUploading = true;
-            this.$store
-                .dispatch("files/upload", formData)
-                .then((res) => {
-                    console.log(res);
-                    this.$emit("add-image", res.url);
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-                .finally(() => {
-                    document.body.removeChild(fileInput);
-                });
-        },
         openFilePicker() {
             const fileInput = document.createElement("input");
             fileInput.type = "file";
             fileInput.accept = "image/*";
-            fileInput.style.display = "none";
+            fileInput.style.display = "none"; // Hide the input element
 
-            fileInput.addEventListener("change", onFilePicked);
+            fileInput.addEventListener("change", (e) => {
+                const file = e.target.files[0];
+                const formData = new FormData();
+                formData.append("file", file);
+                this.imageIsUploading = true;
+                this.$store
+                    .dispatch("files/upload", formData)
+                    .then((res) => {
+                        console.log(res);
+                        this.$emit("add-image", res.url);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+                    .finally(() => {
+                        document.body.removeChild(fileInput);
+                    });
+            });
 
             document.body.appendChild(fileInput);
-            fileInput.click();
+            fileInput.click(); // Trigger the file input dialog
         },
     },
 };
