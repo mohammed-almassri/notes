@@ -11,6 +11,9 @@ class Note extends Model
 {
     use HasFactory, SoftDeletes, HasUuidPK;
 
+    protected $order = 'created_at';
+    protected $orderDirection = 'desc';
+
     protected $fillable = ['id', 'title', 'description', 'user_id', 'image_url', 'pinned_at'];
 
     public function tasks()

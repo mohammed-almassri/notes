@@ -1,7 +1,7 @@
 <template>
     <grid-layout
         :layout="layout"
-        :col-num="2"
+        :col-num="colsPerRow"
         :row-height="50"
         :is-draggable="true"
         :is-resizable="false"
@@ -92,9 +92,17 @@ export default {
         StaticTaskList,
     },
     name: "NoteGrid",
+    mounted() {
+        this.handleResize();
+        //on window resize, change the colsPerRow to an appropriate value
+        window.addEventListener("resize", this.handleResize);
+    },
+    destroyed() {
+        window.removeEventListener("resize", this.handleResize);
+    },
     computed: {
         layout() {
-            const gridColumns = 2;
+            const gridColumns = this.colsPerRow;
             let currentRow = 0;
             let currentColumn = 0;
             const items = this.notes;
@@ -151,7 +159,27 @@ export default {
             return items;
         },
     },
+
+    data() {
+        return {
+            colsPerRow: 2,
+        };
+    },
     methods: {
+        handleResize() {
+            console.log("resize", window.innerWidth);
+            if (window.innerWidth < 320) {
+                this.colsPerRow = 1;
+            } else if (window.innerWidth < 768) {
+                this.colsPerRow = 2;
+            } else if (window.innerWidth < 1024) {
+                this.colsPerRow = 3;
+            } else if (window.innerWidth < 1440) {
+                this.colsPerRow = 4;
+            } else {
+                this.colsPerRow = 6;
+            }
+        },
         titleAndDescEqualURL(note) {
             return (
                 (note.url && note.title && note.url === note.title) ||
