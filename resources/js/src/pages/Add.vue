@@ -136,7 +136,7 @@ export default {
         onPinItem() {
             this.$store.dispatch("notes/updateNote", {
                 ...this.getNoteObject(),
-                pinned_at: this.notePinnedAt
+                pinned_at: this.note.pinned_at
                     ? null
                     : moment().format("YYYY-MM-DD HH:mm:ss"),
             });

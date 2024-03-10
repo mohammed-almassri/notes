@@ -17,7 +17,12 @@
                     alt="add image"
                 />
             </button>
-            <button class="icon-button" title="pin" @click="pinItem">
+            <button
+                class="icon-button"
+                :class="{ 'is-pinned': note && note.pinned_at }"
+                :title="note && (note.pinned_at ? 'unpin' : 'pin')"
+                @click="pinItem"
+            >
                 <img src="@/src/assets/img/icons/pin.png" alt="pin" />
             </button>
             <button class="icon-button" title="delete" @click="deleteItem">
@@ -28,7 +33,7 @@
             {{
                 note
                     ? $t("notes.last_updated", {
-                          date: moment(note.updated_at).fromNow(),
+                          date: fromNow(note.updated_at),
                       })
                     : ""
             }}
@@ -38,6 +43,7 @@
 
 <script>
 import moment from "moment";
+
 export default {
     emits: ["add-image", "add-list", "pin-item", "delete-item"],
     props: {
@@ -46,7 +52,11 @@ export default {
             type: Object,
         },
     },
+
     methods: {
+        fromNow(date) {
+            return moment(date).fromNow();
+        },
         addList() {
             this.$emit("add-list");
         },

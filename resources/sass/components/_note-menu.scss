@@ -16,6 +16,10 @@
         & > * {
             margin-right: var(--space-lg);
         }
+
+        .icon-button.is-pinned {
+            filter: invert(0.3);
+        }
     }
     .note-menu-end {
         flex-grow: 1;
