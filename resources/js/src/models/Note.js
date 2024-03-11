@@ -8,7 +8,7 @@ export default class Note {
     updatedAt = null;
     tasks = [];
 
-    constructor(id, title, description, imageUrl = null, typeId = 1, createdAt = null, updatedAt = null, tasks = []) {
+    constructor(id, title = '', description = '', imageUrl = null, typeId = 1, createdAt = null, updatedAt = null, tasks = []) {
         this.id = id;
         this.title = title;
         this.description = description;

@@ -3,9 +3,7 @@
         <transition-group name="fade-slide">
             <div
                 class="task-list-item"
-                v-for="(item, index) in content
-                    .filter((task) => !task.done)
-                    .sort((a, b) => a.order - b.order)"
+                v-for="(item, index) in filteredContent"
                 :key="item.id"
             >
                 <div class="task-list-item-content">
@@ -23,13 +21,11 @@
                 </div>
             </div>
         </transition-group>
-        <static-task-list :tasks="content.filter((task) => task.done)">
-        </static-task-list>
+        <static-task-list :tasks="doneTasks"></static-task-list>
     </div>
 </template>
 
 <script>
-import { ref, watch, onMounted, nextTick } from "vue";
 import { v4 as uuid } from "uuid";
 import StaticTaskList from "./StaticTaskList.vue";
 
@@ -40,99 +36,92 @@ export default {
             type: Array,
         },
     },
-    emits: ["update:value"],
     components: {
         StaticTaskList,
     },
-    setup(props, { emit }) {
-        const content = ref([...(props.value || [])]);
-        const titleInputs = ref([]);
-        const focusedIndex = ref(null);
-
-        onMounted(() => {
-            focusItem();
-        });
-
-        // Watch for changes in content and update titleInputs ref
-        watch(
-            content,
-            () => {
-                emit("update:value", content.value);
-            },
-            { deep: true }
-        );
-
-        const onEnterClicked = (index) => {
-            const nextItem = titleInputs.value.find((input) => {
-                return input.dataset.order == index + 1;
-            });
-            if (nextItem && nextItem.value.length === 0) {
-                focusItem(index + 1);
-            } else {
-                addItem(index);
-            }
+    data() {
+        return {
+            content: [],
+            titleInputs: [],
+            focusedIndex: null,
         };
-
-        const onBackspaceClicked = (item, index) => {
+    },
+    mounted() {
+        this.focusItem();
+        this.content = [...(this.value || [])];
+    },
+    computed: {
+        filteredContent() {
+            return this.content
+                .filter((task) => !task.done)
+                .sort((a, b) => a.order - b.order);
+        },
+        doneTasks() {
+            return this.content.filter((task) => task.done);
+        },
+    },
+    methods: {
+        onEnterClicked(index) {
+            const nextItem = this.$refs.titleInputs.find(
+                (input) => input.dataset.order == index + 1
+            );
+            if (nextItem && nextItem.value.length === 0) {
+                this.focusItem(index + 1);
+            } else {
+                this.addItem(index);
+            }
+        },
+        onBackspaceClicked(item, index) {
             if (item.title.length === 0) {
-                removeItem(item.id);
-                nextTick(() => {
-                    focusItem(index - 1);
+                this.removeItem(item.id);
+                this.$nextTick(() => {
+                    this.focusItem(index - 1);
                 });
             }
-        };
-
-        const addItem = (index = null) => {
+        },
+        addItem(index = null) {
             if (index === null) {
-                index = content.value.length - 1;
+                index = this.content.length - 1;
             }
-            // content.value.push({
-            //     id: content.value.length + 1,
-            //     title: "",
-            //     done: false,
-            // });
-            content.value.splice(index + 1, 0, {
+            this.content.splice(index + 1, 0, {
                 id: uuid(),
                 title: "",
                 done: false,
                 order: index + 1,
             });
-            nextTick(() => {
-                focusItem(index + 1);
+            this.$nextTick(() => {
+                this.focusItem(index + 1);
             });
-            emit("update:value", content.value);
-        };
-
-        const removeItem = (id) => {
-            content.value = content.value.filter((item) => item.id !== id);
-            emit("update:value", content.value);
-        };
-
-        const focusItem = (index = null) => {
+            this.$emit("update:value", this.content);
+        },
+        removeItem(id) {
+            this.content = this.content.filter((item) => item.id !== id);
+            this.$emit("update:value", this.content);
+        },
+        focusItem(index = null) {
             if (index === null) {
-                index = content.value.length - 1;
+                index = this.content.length - 1;
             }
-            focusedIndex.value = index;
-
-            const lastItemInput = titleInputs.value.find((input) => {
-                return input.dataset.order == index;
-            });
+            this.focusedIndex = index;
+            console.log(this.$refs.titleInputs);
+            const lastItemInput =
+                this.$refs.titleInputs &&
+                this.$refs.titleInputs.find(
+                    (input) => input.dataset.order == index
+                );
 
             if (lastItemInput) {
                 lastItemInput.focus();
             }
-        };
-
-        return {
-            content,
-            addItem,
-            removeItem,
-            onEnterClicked,
-            onBackspaceClicked,
-            focusItem,
-            titleInputs,
-            focusedIndex,
-        };
+        },
+    },
+    watch: {
+        value: {
+            handler() {
+                this.content = [...(this.value || [])];
+            },
+            deep: true,
+        },
     },
 };
 </script>

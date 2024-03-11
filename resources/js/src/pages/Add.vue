@@ -8,22 +8,24 @@
                 class="add-note-input-title"
                 placeholder="Add your title here"
                 @blur="addOrUpdateNote"
-                v-model="noteTitle"
+                v-model="note.title"
             />
             <textarea
-                v-if="noteDescription || !taskList || taskList.length === 0"
+                v-if="
+                    note.description || !note.tasks || note.tasks.length === 0
+                "
                 class="add-note-input-description"
                 placeholder="additional info"
                 @blur="addOrUpdateNote"
-                v-model="noteDescription"
+                v-model="note.description"
                 ref="textarea"
                 @input="resizeTextarea"
                 rows="1"
             ></textarea>
-            <div class="add-note-image-wrapper" v-if="noteImageURL">
+            <div class="add-note-image-wrapper" v-if="note.image_url">
                 <img
-                    v-if="noteImageURL"
-                    :src="noteImageURL"
+                    v-if="note.image_url"
+                    :src="note.image_url"
                     alt="note image"
                     class="add-note-image"
                     width="200px"
@@ -38,8 +40,8 @@
                 </button>
             </div>
             <task-list
-                v-if="taskList !== null"
-                v-model:value="taskList"
+                v-if="note.tasks !== null"
+                v-model:value="note.tasks"
             ></task-list>
         </div>
         <note-menu
@@ -73,12 +75,9 @@ export default {
                 console.log(note);
                 if (note) {
                     this.note = note;
-                    this.noteTitle = note.title;
-                    this.noteDescription = note.description;
-                    this.noteId = this.$route.params.id;
-                    this.noteImageURL = note.image_url;
-                    this.taskList = note.tasks;
                 }
+            } else {
+                this.note = {};
             }
         };
 
@@ -95,13 +94,13 @@ export default {
     data() {
         return {
             notesLoaded: false,
-            noteTitle: "",
-            noteDescription: "",
-            noteImageURL: "",
-            noteId: null,
-            notePinnedAt: null,
+            // noteTitle: "",
+            // noteDescription: "",
+            // noteImageURL: "",
+            // noteId: null,
+            // notePinnedAt: null,
             requestSent: false,
-            taskList: null,
+            // taskList: null,
             noteSaved: false,
             note: null,
         };
@@ -112,27 +111,27 @@ export default {
             textarea.style.height = "auto"; // Reset height to auto
             textarea.style.height = `${textarea.scrollHeight}px`; // Set height to scrollHeight
         },
-        getNoteObject() {
-            console.log("get object task list", this.taskList);
-            return {
-                id: this.noteId,
-                title: this.noteTitle,
-                description: this.noteDescription,
-                image_url: this.noteImageURL,
-                pinned_at: this.notePinnedAt,
+        // getNoteObject() {
+        //     console.log("get object task list", this.taskList);
+        //     return {
+        //         id: this.noteId,
+        //         title: this.noteTitle,
+        //         description: this.noteDescription,
+        //         image_url: this.noteImageURL,
+        //         pinned_at: this.notePinnedAt,
 
-                tasks: this.taskList ? this.taskList : [],
-            };
-        },
+        //         tasks: this.taskList ? this.taskList : [],
+        //     };
+        // },
         onDeleteItem() {
             console;
-            this.$store.dispatch("notes/deleteNote", this.noteId).then(() => {
+            this.$store.dispatch("notes/deleteNote", this.note.id).then(() => {
                 this.$router.replace("/");
             });
         },
         onPinItem() {
             this.$store.dispatch("notes/updateNote", {
-                ...this.getNoteObject(),
+                ...this.note,
                 pinned_at: this.note.pinned_at
                     ? null
                     : moment().format("YYYY-MM-DD HH:mm:ss"),
@@ -140,22 +139,22 @@ export default {
         },
         addOrUpdateNote() {
             if (this.requestSent) return;
-            const data = this.getNoteObject();
+            const data = this.note;
             this.requestSent = true;
             console.log("add or update note", this.noteSaved);
             if (this.noteSaved) {
-                data.id = this.noteId;
+                data.id = this.note.id;
                 store.dispatch("notes/updateNote", data).finally(() => {
                     this.requestSent = false;
                 });
             } else {
-                this.noteId = uuid();
-                data.id = this.noteId;
+                this.note.id = uuid();
+                data.id = this.note.id;
                 store
                     .dispatch("notes/addNote", data)
                     .then((res) => {
                         console.log("note added", res);
-                        this.noteId = res.data.id;
+                        this.note.id = res.data.id;
                         this.noteSaved = true;
                     })
                     .finally(() => {
@@ -168,7 +167,7 @@ export default {
             this.addOrUpdateNote();
         },
         onAddList() {
-            this.taskList = [
+            this.note.tasks = [
                 {
                     id: uuid(),
                     title: "",
@@ -176,12 +175,14 @@ export default {
                     order: 0,
                 },
             ];
+
+            console.log("add list", this.note.tasks);
         },
     },
     watch: {
-        taskList: {
+        "note.tasks": {
             handler() {
-                console.log("tasks", this.taskList);
+                console.log("tasks", this.note.tasks);
 
                 this.addOrUpdateNote();
             },

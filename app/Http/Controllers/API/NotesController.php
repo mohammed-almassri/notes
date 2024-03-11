@@ -43,11 +43,13 @@ class NotesController extends Controller
         }
 
         $tasksData = [];
-        foreach ($request->tasks as $task) {
-            $tasksData[] = TaskData::validateAndCreate(array_merge(
-                $task,
-                ['user_id' => \Auth::id(), 'note_id' => $note->id]
-            ));
+        if ($request->tasks) {
+            foreach ($request->tasks as $task) {
+                $tasksData[] = TaskData::validateAndCreate(array_merge(
+                    $task,
+                    ['user_id' => \Auth::id(), 'note_id' => $note->id]
+                ));
+            }
         }
 
         $this->notesRepository->createTasks($note->id, array_map(fn($task) => $task->toArray(), $tasksData));
@@ -76,11 +78,13 @@ class NotesController extends Controller
         }
 
         $tasksData = [];
-        foreach ($request->tasks as $task) {
-            $tasksData[] = TaskData::validateAndCreate(array_merge(
-                $task,
-                ['user_id' => \Auth::id(), 'note_id' => $note->id]
-            ));
+        if ($request->tasks) {
+            foreach ($request->tasks as $task) {
+                $tasksData[] = TaskData::validateAndCreate(array_merge(
+                    $task,
+                    ['user_id' => \Auth::id(), 'note_id' => $note->id]
+                ));
+            }
         }
         $this->notesRepository->updateTasks($id, array_map(fn($task) => $task->toArray(), $tasksData));
         $noteData = NoteData::from($note);
