@@ -1,12 +1,12 @@
 <template>
     <div class="page page-add">
-        <router-link to="/">Home</router-link>
+        <router-link to="/">{{ $t("home.home") }}</router-link>
         <add-page-loader v-if="!notesLoaded"></add-page-loader>
         <div v-else class="add-note">
             <input
                 type="text"
                 class="add-note-input-title"
-                placeholder="Add your title here"
+                :placeholder="$t('add.add_title')"
                 @blur="addOrUpdateNote"
                 v-model="note.title"
             />
@@ -15,7 +15,7 @@
                     note.description || !note.tasks || note.tasks.length === 0
                 "
                 class="add-note-input-description"
-                placeholder="additional info"
+                :placeholder="$t('add.add_description')"
                 @blur="addOrUpdateNote"
                 v-model="note.description"
                 ref="textarea"

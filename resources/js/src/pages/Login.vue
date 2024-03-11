@@ -72,6 +72,7 @@ export default {
                 .catch((error) => {
                     if (error.response) {
                         if (error.response.status === 401) {
+                            console.log("login 401");
                             this.errors = {
                                 email: error.response.data.message,
                                 password: error.response.data.message,

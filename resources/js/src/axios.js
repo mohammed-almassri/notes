@@ -6,6 +6,22 @@ const instance = axios.create({
     baseURL: "/api"
 });
 
+// const locale = store.state.settings.locale;
+
+// instance.defaults.headers.common['Accept-Language'] = locale;
+
+instance.interceptors.request.use(
+    config => {
+        const locale = store.state.settings.locale;
+        config.headers['Accept-Language'] = locale;
+
+        return config;
+    },
+    error => {
+        return Promise.reject(error);
+    }
+);
+
 instance.interceptors.response.use(
     response => response,
     error => {

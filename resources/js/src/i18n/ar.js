@@ -1,28 +1,4 @@
 export default {
-    // auth: {
-    //     login: 'Login',
-    //     register: 'Register',
-    //     logout: 'Logout',
-    //     email: 'Email',
-    //     password: 'Password',
-    //     login_description: 'Login to your account',
-    //     register_description: 'Register a new account',
-    //     no_account: 'Don\'t have an account? register',
-    //     already_account: 'Already have an account? login',
-    //     name: 'Full Name',
-    //     password_confirmation: 'Confirm Password',
-    // },
-    // home: {
-    //     home_title: 'Start Your Journey',
-    //     home_description: 'Every big step start with small step. Notes your first idea and start your journey!',
-    //     pinned_notes: 'Pinned',
-    // },
-    // notes: {
-    //     last_updated: 'edited {date}'
-    // },
-    // settings: {
-    //     title: 'settings',
-    // }
     auth: {
         login: 'تسجيل الدخول',
         register: 'تسجيل',
@@ -41,6 +17,10 @@ export default {
         home_description: 'كل خطوة كبيرة تبدأ بخطوة صغيرة. ملاحظات أول فكرة لك وابدأ رحلتك!',
         pinned_notes: 'مثبت',
         home: 'الرئيسية',
+    },
+    add: {
+        add_title: 'إضافة ملاحظة جديدة',
+        add_description: 'معلومات إضافية',
     },
     notes: {
         last_updated: 'تم التعديل {date}'

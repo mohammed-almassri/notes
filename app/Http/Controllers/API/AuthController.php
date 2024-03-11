@@ -30,7 +30,7 @@ class AuthController extends Controller
 
         if (!$response) {
             return response([
-                'message' => 'Invalid credentials',
+                'message' => __('errors.invalid_credentials'),
             ], 401);
         }
 

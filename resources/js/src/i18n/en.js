@@ -18,6 +18,10 @@ export default {
         pinned_notes: 'Pinned',
         home: 'Home',
     },
+    add: {
+        add_title: 'Add New Note',
+        add_description: 'Additional info',
+    },
     notes: {
         last_updated: 'edited {date}'
     },
