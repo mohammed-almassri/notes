@@ -16,8 +16,14 @@ export default {
         home_title: 'Start Your Journey',
         home_description: 'Every big step start with small step. Notes your first idea and start your journey!',
         pinned_notes: 'Pinned',
+        home: 'Home',
     },
     notes: {
         last_updated: 'edited {date}'
+    },
+    settings: {
+        title: 'settings',
+        change_locale_to: 'Change Language To',
+        logout: 'Logout',
     }
 }

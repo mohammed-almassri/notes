@@ -13,6 +13,21 @@ const i18n = createI18n({
 })
 
 
+//set the moment locale
+import moment from 'moment';
+import 'moment/locale/en-gb';
+import 'moment/locale/ar';
+moment.locale('en-gb');
+const locale = localStorage.getItem('locale') || 'en';
+
+if (locale === 'ar') {
+    document.querySelector('html').setAttribute('dir', 'rtl');
+    document.querySelector('html').setAttribute('lang', 'ar');
+    moment.locale('ar');
+}
+
+
+
 createApp(App)
     .use(router)
     .use(store)

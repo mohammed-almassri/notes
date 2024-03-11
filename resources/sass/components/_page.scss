@@ -4,3 +4,8 @@
 .page-home {
     padding-bottom: var(--bottom-menu-height);
 }
+.page-settings {
+    div > * {
+        margin-top: var(--space-lg);
+    }
+}

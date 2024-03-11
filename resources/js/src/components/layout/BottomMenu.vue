@@ -8,12 +8,14 @@
         <span></span>
         <span></span>
         <span></span>
-        <router-link class="bottom-menu-item" to="/profile">
+        <router-link class="bottom-menu-item" to="/settings">
             <img
                 src="@/assets/img/icons/cog.svg"
                 class="bottom-menu-item-icon"
             />
-            <span class="bottom-menu-item-title">Settings</span>
+            <span class="bottom-menu-item-title">{{
+                $t("settings.title")
+            }}</span>
         </router-link>
     </div>
 </template>
