@@ -34,10 +34,7 @@
                     title="remove image"
                     @click="onAddImage(null)"
                 >
-                    <img
-                        src="@/src/assets/img/icons/x.svg"
-                        alt="remove image"
-                    />
+                    <img src="@/assets/img/icons/x.svg" alt="remove image" />
                 </button>
             </div>
             <task-list
@@ -56,8 +53,8 @@
 </template>
 
 <script>
-import store from "@/src/store/index.js";
-import Note from "@/src/models/Note.js";
+import store from "@/store/index.js";
+import Note from "@/models/Note.js";
 import NoteMenu from "../components/notes/NoteMenu.vue";
 import TaskList from "../components/tasks/TaskList.vue";
 import { v4 as uuid } from "uuid";

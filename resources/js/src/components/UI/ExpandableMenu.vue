@@ -1,7 +1,7 @@
 <template>
     <div class="expandable-menu" :class="{ expanded }">
         <button @click="onExpandClicked" class="expandable-menu-expand-button">
-            <img src="@/src/assets/img/icons/plus.svg" />
+            <img src="@/assets/img/icons/plus.svg" />
         </button>
         <div
             class="expandable-menu-menu"

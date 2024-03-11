@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name') }}</title>
-    @vite(['resources/js/app.js', 'resources/sass/style.scss'])
+    {{-- @vite(['resources/js/app.js', 'resources/sass/style.scss']) --}}
+    <link rel="stylesheet" href="{{ mix('css/style.css') }}">
+    <script type="module" src="{{ mix('js/app.js') }}"></script>
 </head>
 
 <body>

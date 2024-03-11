@@ -3,7 +3,7 @@
         <note-grid-loader v-if="!notesLoaded"> </note-grid-loader>
         <template v-else-if="notes.length == 0">
             <div class="page-illustration">
-                <img src="@/src/assets/img/home.png" />
+                <img src="@/assets/img/home.png" />
             </div>
             <h1 class="page-title">{{ $t("home.home_title") }}</h1>
             <p class="page-desc">

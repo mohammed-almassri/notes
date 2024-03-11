@@ -2,20 +2,14 @@
     <div class="note-menu">
         <div class="note-menu-start">
             <button class="icon-button" title="add list" @click="addList">
-                <img
-                    src="@/src/assets/img/icons/view-list.svg"
-                    alt="add list"
-                />
+                <img src="@/assets/img/icons/view-list.svg" alt="add list" />
             </button>
             <button
                 class="icon-button"
                 title="add image"
                 @click="openFilePicker"
             >
-                <img
-                    src="@/src/assets/img/icons/photograph.svg"
-                    alt="add image"
-                />
+                <img src="@/assets/img/icons/photograph.svg" alt="add image" />
             </button>
             <button
                 class="icon-button"
@@ -23,10 +17,10 @@
                 :title="note && (note.pinned_at ? 'unpin' : 'pin')"
                 @click="pinItem"
             >
-                <img src="@/src/assets/img/icons/pin.png" alt="pin" />
+                <img src="@/assets/img/icons/pin.png" alt="pin" />
             </button>
             <button class="icon-button" title="delete" @click="deleteItem">
-                <img src="@/src/assets/img/icons/trash.svg" alt="delete" />
+                <img src="@/assets/img/icons/trash.svg" alt="delete" />
             </button>
         </div>
         <div class="note-menu-end" :title="note ? note.updated_at : ''">
