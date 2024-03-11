@@ -30,4 +30,8 @@
             border-color: var(--color-primary);
         }
     }
+    .invalid-feedback {
+        color: var(--color-danger);
+        font-size: var(--font-2xs);
+    }
 }

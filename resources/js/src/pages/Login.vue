@@ -16,6 +16,9 @@
                     required
                     v-model="email"
                 />
+                <div v-if="errors.email" class="invalid-feedback">
+                    {{ errors.email }}
+                </div>
             </div>
             <div class="form-group">
                 <label for="password">{{ $t("auth.password") }}</label>
@@ -26,8 +29,13 @@
                     required
                     v-model="password"
                 />
+                <div v-if="errors.password" class="invalid-feedback">
+                    {{ errors.password }}
+                </div>
             </div>
-            <button type="submit">{{ $t("auth.login") }}</button>
+            <button :disabled="requestLoading" type="submit">
+                {{ $t("auth.login") }}
+            </button>
         </form>
         <div class="form-width">
             <router-link to="/register">{{
@@ -44,6 +52,8 @@ export default {
         return {
             email: "",
             password: "",
+            errors: {},
+            requestLoading: false,
         };
     },
     methods: {
@@ -53,9 +63,28 @@ export default {
                 password: this.password,
             };
             console.log(data);
-            this.$store.dispatch("auth/login", data).then(() => {
-                this.$router.push("/");
-            });
+            this.requestLoading = true;
+            this.$store
+                .dispatch("auth/login", data)
+                .then(() => {
+                    this.$router.push("/");
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        if (error.response.status === 401) {
+                            this.errors = {
+                                email: error.response.data.message,
+                                password: error.response.data.message,
+                            };
+                        }
+                        if (error.response.status === 422) {
+                            this.errors = error.response.data.errors;
+                        }
+                    }
+                })
+                .finally(() => {
+                    this.requestLoading = false;
+                });
         },
     },
 };

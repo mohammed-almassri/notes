@@ -16,6 +16,9 @@
                     required
                     v-model="name"
                 />
+                <span class="invalid-feedback" v-if="errors.name">{{
+                    errors.name
+                }}</span>
             </div>
             <div class="form-group">
                 <label for="email">{{ $t("auth.email") }}</label>
@@ -26,6 +29,9 @@
                     required
                     v-model="email"
                 />
+                <span class="invalid-feedback" v-if="errors.email">{{
+                    errors.email
+                }}</span>
             </div>
             <div class="form-group">
                 <label for="password">{{ $t("auth.password") }}</label>
@@ -36,6 +42,9 @@
                     required
                     v-model="password"
                 />
+                <span class="invalid-feedback" v-if="errors.password">{{
+                    errors.password
+                }}</span>
             </div>
             <div class="form-group">
                 <label for="password_confirmation">{{
@@ -48,8 +57,15 @@
                     required
                     v-model="password_confirmation"
                 />
+                <span
+                    class="invalid-feedback"
+                    v-if="errors.password_confirmation"
+                    >{{ errors.password_confirmation }}</span
+                >
             </div>
-            <button type="submit">{{ $t("auth.register") }}</button>
+            <button :disabled="requestLoading" type="submit">
+                {{ $t("auth.register") }}
+            </button>
         </form>
         <div class="form-width">
             <router-link to="/login">{{
@@ -68,6 +84,8 @@ export default {
             email: "",
             password: "",
             password_confirmation: "",
+            errors: {},
+            requestLoading: false,
         };
     },
     methods: {
@@ -78,9 +96,25 @@ export default {
                 password_confirmation: this.password_confirmation,
                 name: this.name,
             };
-            this.$store.dispatch("auth/register", data).then(() => {
-                this.$router.push("/");
-            });
+            this.requestLoading = true;
+            this.$store
+                .dispatch("auth/register", data)
+                .then(() => {
+                    this.$router.push("/");
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        if (error.response.status === 422) {
+                            this.errors = error.response.data.errors;
+                            Object.keys(this.errors).map((key) => {
+                                this.errors[key] = this.errors[key][0];
+                            });
+                        }
+                    }
+                })
+                .finally(() => {
+                    this.requestLoading = false;
+                });
         },
     },
 };

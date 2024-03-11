@@ -28,6 +28,12 @@ class AuthController extends Controller
         // Attempt to log the user in
         $response = $this->authService->login($request->only('email', 'password'));
 
+        if (!$response) {
+            return response([
+                'message' => 'Invalid credentials',
+            ], 401);
+        }
+
         return response([
             'user' => $response->user,
             'token' => $response->token,

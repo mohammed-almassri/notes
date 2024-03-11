@@ -6,13 +6,11 @@ use App\Services\Auth\Responses\LoginResponse;
 
 class AuthService implements AuthServiceInterface
 {
-    public function login(array $credentials): LoginResponse
+    public function login(array $credentials): LoginResponse | false
     {
         // Attempt to log the user in
         if (!auth()->attempt($credentials)) {
-            return response([
-                'message' => 'Invalid credentials',
-            ], 401);
+            return false;
         }
 
         // Generate a token for the user
