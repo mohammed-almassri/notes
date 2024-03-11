@@ -22,6 +22,7 @@ class NotesControllerTest extends TestCase
         $url = $response->json('url');
 
         $response = $this->postJson(route('api.notes.store'), [
+            'id' => \Str::uuid(),
             'title' => 'Test Note',
             'description' => 'This is a test note',
             'image_url' => $url,
@@ -33,6 +34,7 @@ class NotesControllerTest extends TestCase
     {
         $user = \App\Models\User::factory()->create();
         $note = $user->notes()->create([
+            'id' => \Str::uuid(),
             'title' => 'Test Note',
             'description' => 'This is a test note',
         ]);
@@ -54,6 +56,7 @@ class NotesControllerTest extends TestCase
     {
         $user = \App\Models\User::factory()->create();
         $note = $user->notes()->create([
+            'id' => \Str::uuid(),
             'title' => 'Test Note',
             'description' => 'This is a test note',
         ]);
@@ -70,6 +73,7 @@ class NotesControllerTest extends TestCase
     {
         $user = \App\Models\User::factory()->create();
         $note = $user->notes()->create([
+            'id' => \Str::uuid(),
             'title' => 'Test Note',
             'description' => 'This is a test note',
         ]);
@@ -91,10 +95,12 @@ class NotesControllerTest extends TestCase
         $user = \App\Models\User::factory()->create();
         $notes = $user->notes()->createMany([
             [
+                'id' => \Str::uuid(),
                 'title' => 'Test Note 1',
                 'description' => 'This is a test note 1',
             ],
             [
+                'id' => \Str::uuid(),
                 'title' => 'Test Note 2',
                 'description' => 'This is a test note 2',
             ],
