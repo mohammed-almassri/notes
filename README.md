@@ -22,20 +22,14 @@ Before setting up the project, make sure you have the following installed:
 
 ### Installation Steps
 
-1. **Clone the Repository**
-
-    ```bash
-    git clone https://github.com/mohammed-almassri/notes.git
-    ```
-
-2. **Install Dependencies**
+1. **Install Dependencies**
 
     ```bash
     composer install
     npm install
     ```
 
-3. **Environment Configuration**
+1. **Environment Configuration**
 
     - Create a copy of the `.env` file
 
@@ -45,31 +39,31 @@ Before setting up the project, make sure you have the following installed:
 
     - Update the `.env` file with your database credentials
 
-4. **Generate an application key**
+1. **Generate an application key**
 
     ```bash
     php artisan key:generate
     ```
 
-5. **Run Migrations**
+1. **Run Migrations**
 
     ```bash
     php artisan migrate
     ```
 
-6. **Start the development server**
+1. **Start the development server**
 
     ```bash
     php artisan serve
     ```
 
-7. **Compile assets**
+1. **Compile assets**
 
     ```bash
     npm run dev
     ```
 
-8. **Visit the application in your browser**
+1. **Visit the application in your browser**
 
     ```bash
     http://localhost:8000
